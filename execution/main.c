@@ -2,11 +2,12 @@
 
 // cc main.c -lreadline
 
-// void    handle_sigint(int sig)
-// {
-//     rl_redisplay();
-//     printf("\nMinishell~$ ");
-// }
+void    handle_sigint(int sig)
+{
+        (void)sig;
+        rl_redisplay();
+        printf("\nMinishell~$ ");
+}
 
 int main(int argc, char **argv, char **env)
 {
@@ -14,20 +15,19 @@ int main(int argc, char **argv, char **env)
         (void)argc;
         (void)argv;
         t_env   *envrmnt;
+        t_env   *envcpy;
 
         envrmnt = NULL;
-        copy_env(env, &envrmnt, NULL,'r');
-        // export_cmd(&envrmnt, NULL);
-        env_cmd(envrmnt);
-        printf("-------------------------------");
-        unset_cmd(&envrmnt, "yy");
-        env_cmd(envrmnt);
+        envcpy= NULL;
+        copy_env(env, &envrmnt);
+        copy_env(env, &envcpy);
         ft_lstclear(&envrmnt);
+        ft_lstclear(&envcpy);
         // signal(SIGINT, handle_sigint);
         // while (1)
         // {
         //     input = readline("Minishell~$ ");
-        //     if (input == NULL || (strcmp(input, "exit") == 0))
+        //     if (input == NULL)
         //     {
         //         printf("exit\n");
         //         free(input);
@@ -36,6 +36,7 @@ int main(int argc, char **argv, char **env)
         //     if (*input) {
         //         add_history(input);
         //     }
+        //     assigned_lvar(&l_var, input);
         //     free(input);
         // }
         // rl_clear_history();
