@@ -23,6 +23,19 @@ typedef struct s_env{
         struct s_env   *next;
 }               t_env;
 
+typedef struct s_local{
+        char    *name;
+        char    *value;
+        struct s_local *prev;
+        struct s_local *next;
+}               t_local;
+
+enum e_quoting_status {
+	DFLT,
+	SQUOTE,
+	DQUOTE
+};
+
 // void    handle_sigint(int sig);
 
 // built-in_functions

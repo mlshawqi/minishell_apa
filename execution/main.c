@@ -15,14 +15,14 @@ int main(int argc, char **argv, char **env)
         (void)argc;
         (void)argv;
         t_env   *envrmnt;
-        t_env   *envcpy;
+        t_env   *export;
 
         envrmnt = NULL;
-        envcpy= NULL;
+        export= NULL;
         copy_env(env, &envrmnt);
-        copy_env(env, &envcpy);
+        copy_env(env, &export);
         ft_lstclear(&envrmnt);
-        ft_lstclear(&envcpy);
+        ft_lstclear(&export);
         // signal(SIGINT, handle_sigint);
         // while (1)
         // {
