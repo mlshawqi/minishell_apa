@@ -43,7 +43,7 @@ int main(int ac, char **av, char **env)
 {
     t_data data;
 
-    ft_memset(&data, 0, sizeof(t_data));
+//     ft_memset(&data, 0, sizeof(t_data));
     if (!ft_initialise_data(&data, env)) {
         print_command_error("Fatal", NULL, "Could not initialize environment", 1);
         exit_shell(NULL, EXIT_FAILURE);

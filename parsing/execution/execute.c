@@ -20,21 +20,31 @@ int     is_builtin(t_data *data, char *command, char **args)
 
 void    execution(t_data *data)
 {
-        // t_cmd   *tmp;
-        // int     i;
+        t_cmd   *tmp;
+        int     i;
 
-        // // printf("%d\n", g_last_exit_code);
-        // tmp = data->cmd;
-        // while(tmp)
-        // {
-        //         is_builtin(data, tmp->command, tmp->args);
-        //         tmp = tmp->next;
-        // }
-        int i = 0;
-        while(data->cmd->args[i])
+        tmp = data->cmd;
+        while(tmp)
         {
-                printf("arg [%d] %s\n",i,  data->cmd->args[i]);
-                i++;
+                printf("command %s\n", tmp->command);
+                while(tmp->args[i])
+                {
+                        printf("arg[%d]  %s\n", i, tmp->args[i]);
+                        i++;
+                }
+                if(tmp->pipe_output)
+                        printf("pipe yes\n");
+                if(tmp->io_fds->fd_in)
+                        printf("fd_in %d\n", tmp->io_fds->fd_in);
+                if(tmp->io_fds->fd_out)
+                        printf("fd_out %d\n", tmp->io_fds->fd_out);
+                if(tmp->io_fds->infile)
+                        printf("infile %s\n", tmp->io_fds->infile);
+                if(tmp->io_fds->outfile)
+                        printf("otufile %s\n", tmp->io_fds->outfile);
+                if(tmp->io_fds->heredoc_delimiter)
+                        printf("herdoc %s\n", tmp->io_fds->heredoc_delimiter);
+                tmp = tmp->next;
         }
 }
 
