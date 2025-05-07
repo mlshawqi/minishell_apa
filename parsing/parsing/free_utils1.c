@@ -51,18 +51,46 @@ void	close_files_descriptors(t_cmd *cmds, bool should_close)
 	}
 }
 
-void free_env_list(t_env *env_list)////////////////ajout
+void	free_env_list(t_env **list)
 {
-    t_env *temp;
+	t_env *p;
 
-    while (env_list)
+	
+	if (list == NULL || *list == NULL)
+		return ;
+	while (*list != NULL)
+	{
+		p = (*list)->next;
+		if((*list)->name)
+		{
+			free((*list)->name);
+			(*list)->name = NULL;
+		}
+		if((*list)->value)
+		{
+			free((*list)->value);
+			(*list)->value = NULL;
+		}
+		*list = p;
+	}
+	*list = NULL;
+}
+
+void free_env_array(char **env_arr)
+{
+    int i;
+
+    if (!env_arr)
+        return;
+
+    i = 0;
+    while (env_arr[i])
     {
-        temp = env_list;
-        env_list = env_list->next;
-        // free_str(temp->key);   // Libère la clé (si allouée)
-        free_str(temp->value); // Libère la valeur (si allouée)
-        free(temp);            // Libère l'élément de la liste
+        free(env_arr[i]);
+        env_arr[i] = NULL;
+        i++;
     }
+    free(env_arr);
 }
 
 void	cleanup_shell_data(t_data *data, bool clear_history)
@@ -71,11 +99,20 @@ void	cleanup_shell_data(t_data *data, bool clear_history)
 		return ;
 	free_str(data->user_input);
 	data->user_input = NULL;
+	free_env_list(&data->export);
+	data->export = NULL;
+	if(data->env_arr)
+	{
+		free_string_array(data->env_arr);
+		data->env_arr = NULL;
+	}
 	clear_token_list(&data->token, &free_str);
 	free_command_list(&data->cmd, &free_str);
 	if (clear_history)
 	{
-		free_env_list(data->env);
+		if(data->cmd)
+			free_str(data->pwd);
+		free_env_list(&data->env);
 		rl_clear_history();
 	}
 }

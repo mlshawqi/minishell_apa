@@ -7,7 +7,7 @@ void	minishell_interactive(t_data *data)
 	while (1)
 	{
 		configure_interactive_signals();
-		data->user_input = readline("Minishell> ");
+		data->user_input = readline("minishell~$ ");
 		configure_noninteractive_signals();
 		if (!data->user_input)
 		{
@@ -15,7 +15,8 @@ void	minishell_interactive(t_data *data)
 			break ;
 		}
 		process_user_input(data);
-		execution(data);
+		if(data->cmd)
+			execution(data);
 		cleanup_shell_data(data, false);
 	}
 }

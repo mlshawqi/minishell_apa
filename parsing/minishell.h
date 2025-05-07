@@ -55,12 +55,20 @@ typedef struct s_in_out_fds
 	// int		stdout_backup;
 }	t_in_out_fds;
 
+typedef	struct s_pipex
+{
+	int		fork_pid;
+	int		status;
+	char		*path;
+}		t_pipex;
+
 typedef struct s_cmd
 {
 	char				*command;
 	char				**args;
 	bool				pipe_output;
 	t_in_out_fds			*io_fds;
+	t_pipex		*pipex;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
@@ -78,7 +86,9 @@ typedef struct s_data
 	t_separation		*token;
 	char		*user_input;
 	t_env		*export;
-	t_env		*env;//////////////////////////
+	t_env		*env;
+	char		**env_arr;
+	char		*pwd;
 	// char		*working_dir;
 	// char		*old_working_dir;
 	t_cmd	*cmd;
@@ -240,16 +250,19 @@ void	configure_interactive_signals_herdoc(void);
 //execution
 // built-in_functions
 int    echo_cmd(char **arg);
-int    cd_cmd(char **args, t_env **env);
-int    pwd_cmd(char **args);
+int    cd_cmd(char **args, t_env **env, t_data *data);
+int    pwd_cmd(t_data *data, char **args);
 int    env_cmd(t_env *lst, char **arg);
-int    export_cmd(t_env **envrmnt, t_env **export, char **args);
+int    export_cmd(t_data *data, t_env **envrmnt, t_env **export, char **args);
 int    unset_cmd(t_env **env, t_env **export, char **args);
 int    exit_cmd(char **arg);
 
 void    copy_env(char **env, t_env **list);
 void    sort_env(t_env **env);
 void    swap_nodes(t_env *lst, t_env **env);
+void  export_var(t_env **lst, char *var);
+int     appand_value(t_env *tmp, char *arg);
+t_env    *new_node(char *arg);
 
 void	link_node(t_env **head, char *line);
 int	ft_lstsize(t_env *lst);
@@ -261,11 +274,26 @@ void	ft_lstdelone(t_env *lst);
 long long	ft_atoii(const char *str);
 
 //execve
-int     is_builtin(t_data *data, char *command, char **args);
-int    ft_execve(t_env *env, char *cmd, char **args);
+int     run_builtin_if_exists(t_data *data, t_cmd *cmd);
 char     *find_program_path(t_env *env, char *cmd);
 char    **env_to_array(t_env *env);
-void    execution(t_data *data);
+int    execution(t_data *data);
+int    ft_execve(t_data *data, t_cmd *cmd);
+void    handle_redirections(t_data *data, t_cmd *tmp);
+int    execute_with_pipes(t_data *data, int npipe);
+int     **allocate_pipes(int count);
+void    free_tab(int **arr, int i);
+int    handle_child_process(t_data *data, t_cmd *cmd, int **pipes, int i, int count);
+int    execute_command(t_data *data, t_cmd *cmd);
+void    close_pipes(int **pipes,int count);
+int     wait_for_all(t_data *data);
+void    handle_sigint_pipe(int sig);
+int    ft_execve_pipe(t_data *data, t_cmd *cmd);
+void    handle_pipe_redirections(t_data *data, t_cmd *tmp);
+int     init_or_count_pipes(t_cmd *cmd, int hint);
+int	malloc_error(const char *context);
+void    print_cmd_error(const char *cmd, const char *msg, char *option);
+char    *valid_path(char *str, char *cmd);
 
 
 #endif
