@@ -1,12 +1,9 @@
 #include "../minishell.h"
 
-
-
 void	init_cmd_in_out(t_cmd *cmd)
 {
 	if (!cmd->io_fds)
 	{
-		////////
 		cmd->io_fds = malloc(sizeof *cmd->io_fds);
 		if (!cmd->io_fds)
 			return ;
@@ -75,9 +72,6 @@ bool ft_initialise_env(t_data *data, char **env)
     copy_env(env, &data->env);
     if (!data->env)
         return (false);
-    // copy_env(env, &data->export);
-    // if (!data->export)
-    //     return (false);
     return (true);
 }
 

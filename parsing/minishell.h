@@ -14,8 +14,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 # include <sys/types.h>
-#include "./print/ft_printf.h"
 #include "./libft/libft.h"
+#include <sys/stat.h>
+
 
 #define SUCCESS 0
 #define FAILURE 1
@@ -294,6 +295,7 @@ int     init_or_count_pipes(t_cmd *cmd, int hint);
 int	malloc_error(const char *context);
 void    print_cmd_error(const char *cmd, const char *msg, char *option);
 char    *valid_path(char *str, char *cmd);
+char     *relative_path(t_env *env, char *cmd);
 
 
 #endif
