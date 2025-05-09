@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void    copy_env(char **env, t_env **list)
 {
@@ -52,5 +52,19 @@ t_env	*ft_lstnew(char *line)
 	new_node->next = NULL;
 	new_node->previous = NULL;
 	return (new_node);
+}
+
+t_env    *new_node(char *arg)
+{
+    t_env   *new;
+
+    new = malloc(sizeof(t_env));
+    if(!new)
+        return NULL;
+    ft_strlcpy(new->name, arg, (ft_strchr(arg, '+') - arg));
+    new->value = ft_strdup(ft_strchr(arg, '=') + 1);
+    new->next = NULL;
+    new->previous = NULL;
+    return (new);
 }
 

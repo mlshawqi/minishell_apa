@@ -1,8 +1,29 @@
 #include "libft.h"
 
-int	ft_atoi(char *str, int *error)
+static int	check_overflow(int sign, unsigned long long nbr)
 {
-	long	result;
+	if (sign < 0)
+	{
+		if(nbr > MIN_LONG)
+		{
+			printf("minishell: exit: numeric argument required\n");
+			return (-1);
+		}
+	}
+	else
+	{
+		if(nbr > MAX_LONG)
+		{
+			printf("minishell: exit: numeric argument required\n");
+			return (-1);
+		}
+	}
+	return (0);
+}
+
+long long	ft_atoi(const char *str)
+{
+	unsigned long long	result;
 	int		sign;
 	int		i;
 
@@ -19,26 +40,11 @@ int	ft_atoi(char *str, int *error)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (!check_overflow(result, str[i] - '0', sign, error))
-			return (0);
 		result *= 10;
 		result += str[i] - 48;
+		if (check_overflow(sign, result) == -1)
+			return (2);
 		i++;
 	}
 	return (result * sign);
-}
-
-int	check_overflow(long result, int digit, int sign, int *error)
-{
-	if (sign == 1 && result > (INT_MAX - digit) / 10)
-	{
-		*error = 1;
-		return (0);
-	}
-	if ((sign == -1) && (-result < (INT_MIN + digit) / 10))
-	{
-		*error = 1;
-		return (0);
-	}
-	return (1);
 }
