@@ -51,7 +51,7 @@ void  export_var(t_env **lst, char *var)
     {
         if(ft_strncmp(tmp->name, var, is_len(tmp->name, var, '=')) == 0)
         {
-            printf("in found name %s var %s\n", tmp->name, var);
+            // printf("in found name %s var %s\n", tmp->name, var);
             len = ft_strlen(ft_strchr(var, '=') + 1);
             if(tmp->value)
                 free_str_null(&tmp->value);

@@ -9,9 +9,9 @@ static int  change_home(t_env *env)
     {
         if(ft_strcmp(env->name, "HOME") == 0)
         {
-            if(chdir(env->value) == -1)
+            if((env->value[0] != '\0') &&  chdir(env->value) == -1)
             {
-                perror("cd");
+                print_cmd_error("minishell", "No such file or directory", env->value);
                 return (-1);
             }
             is_foud++;
@@ -100,7 +100,7 @@ int    cd_cmd(char **args, t_env **env, t_data *data)
     }
     else if(chdir(*args) == -1)
     {
-        perror("cd");
+        print_cmd_error("minishell", "No such file or directory",*args);
         return (1);
     }
     update_pwd2(data, env);

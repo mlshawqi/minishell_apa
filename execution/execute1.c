@@ -49,7 +49,6 @@ int     init_or_count_pipes(t_cmd *cmd, int hint)
                 if(!cmd->pipex)
                         return (-1);
                 cmd->pipex->path = NULL;
-                // ft_memset(cmd->pipex, 0, sizeof(t_pipex));
         }
         else
         {

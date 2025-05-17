@@ -54,6 +54,7 @@ void    set_shell_lvl(t_env *env)
                         if(tmp->value)
                         {
                                 nbr = ft_atoi(tmp->value) + 1;
+                                if (tmp )
                                 free(tmp->value);
                                 tmp->value = ft_itoa(nbr);
                         }
@@ -72,7 +73,7 @@ void     init_env_defaults(t_data *data)
         if(!pwd)
                 print_cmd_error("pwd", strerror(errno), NULL);
         link_node(&data->env, creat_node("PWD", pwd));
-        link_node(&data->env, creat_node("SHLVL", "1"));
+        link_node(&data->env, creat_node("SHLVL", "0"));
         path = ft_strdup("/home/machaouk/.local/bin"
                 ":/usr/local/sbin:/usr/local/bin"
                 ":/usr/sbin:/usr/bin:/sbin:/bin");
@@ -80,7 +81,7 @@ void     init_env_defaults(t_data *data)
         link_node(&data->env, creat_node("OLDPWD", NULL));
 
         link_node(&data->export, creat_node("PWD", pwd));
-        link_node(&data->export, creat_node("SHLVL", "1"));
+        link_node(&data->export, creat_node("SHLVL", "0"));
         path = ft_strdup("/home/machaouk/.local/bin"
                 ":/usr/local/sbin:/usr/local/bin"
                 ":/usr/sbin:/usr/bin:/sbin:/bin");

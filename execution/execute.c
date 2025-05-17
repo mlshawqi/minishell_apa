@@ -124,6 +124,23 @@ int    execute_with_pipes(t_data *data, int npipe)
         return(wait_for_all(data));
 }
 
+int    one_command(t_data *data)
+{
+        if(init_or_count_pipes(data->cmd, 1) == -1)
+                return (malloc_error("t_pipex pipex"));
+        if(!data->cmd->io_fds)
+        {
+                if(data->cmd->command)
+                {
+                        if(run_builtin_if_exists(data, data->cmd) == 1)
+                                g_last_exit_code = ft_execve(data, data->cmd);
+                }
+        }
+        else
+                handle_redirections(data, data->cmd);
+        return (g_last_exit_code);
+}
+
 int    execution(t_data *data)
 {
         int     npipe;
@@ -132,20 +149,7 @@ int    execution(t_data *data)
         if(init_env_arr(data) != 0)
                 return (1);
         if(!npipe)
-        {
-                if(init_or_count_pipes(data->cmd, 1) == -1)
-                        return (malloc_error("t_pipex pipex"));
-                if(!data->cmd->io_fds)
-                {
-                        if(data->cmd->command)
-                        {
-                                if(run_builtin_if_exists(data, data->cmd) == 1)
-                                        g_last_exit_code = ft_execve(data, data->cmd);
-                        }
-                }
-                else
-                        handle_redirections(data, data->cmd);
-        }
+                g_last_exit_code = one_command(data);
         else
         {
                 g_last_exit_code = execute_with_pipes(data, npipe);

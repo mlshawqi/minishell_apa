@@ -314,7 +314,7 @@ int    handle_pipe_redirections(t_data *data, t_cmd *cmd);
 int     init_or_count_pipes(t_cmd *cmd, int hint);
 int	malloc_error(const char *context);
 void    print_cmd_error(const char *cmd, const char *msg, char *option);
-char    *valid_path(char *str, char *cmd);
+char    *valid_path(char *cmd, char **arr);
 char     *relative_path(t_env *env, char *cmd);
 void    free_str_null(char **str);
 void	set_signals(void);
@@ -323,6 +323,7 @@ void    init_env_defaults(t_data *data);
 void    set_shell_lvl(t_env *env);
 void    handle_fork_sig(int sig);
 int      open_files(t_in_out_fds *redirec);
+int    one_command(t_data *data);
 
 
 #endif
