@@ -78,4 +78,12 @@ void     init_env_defaults(t_data *data)
                 ":/usr/sbin:/usr/bin:/sbin:/bin");
         link_node(&data->env, creat_node("PATH", path));
         link_node(&data->env, creat_node("OLDPWD", NULL));
+
+        link_node(&data->export, creat_node("PWD", pwd));
+        link_node(&data->export, creat_node("SHLVL", "1"));
+        path = ft_strdup("/home/machaouk/.local/bin"
+                ":/usr/local/sbin:/usr/local/bin"
+                ":/usr/sbin:/usr/bin:/sbin:/bin");
+        link_node(&data->export, creat_node("PATH", path));
+        link_node(&data->export, creat_node("OLDPWD", NULL));
 }

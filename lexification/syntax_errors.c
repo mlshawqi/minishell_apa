@@ -61,8 +61,6 @@ static int	check_errors_part_one(t_separation *temp)
 			return (FAILURE);
 		}
 	}
-
-	// Cas : un pipe suivi d’un mot interdit
 	if (temp->type == PIPE && temp->next && temp->next->type == WORD)
 	{
 		const char *next_word = temp->next->str;
@@ -73,8 +71,6 @@ static int	check_errors_part_one(t_separation *temp)
 			return (FAILURE);
 		}
 	}
-
-	// Cas : token invalide isolé comme argument
 	if (temp->type == WORD && temp->str)
 	{
     	char c = temp->str[0];
@@ -85,8 +81,6 @@ static int	check_errors_part_one(t_separation *temp)
         	return (FAILURE);
     	}
 	}
-
-	// Cas : gestion des &
 	if (temp->type == AMPER)
 	{
 		t_separation *curr = temp;
@@ -125,6 +119,7 @@ int	check_errors_rep(t_separation **token_lst)
 			g_last_exit_code = 2;
 			return (FAILURE);
 		}
+			
 		if (has_consecutive_ops(temp))
 		{
 			display_error_message(

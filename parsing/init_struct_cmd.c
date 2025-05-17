@@ -84,7 +84,10 @@ bool	ft_initialise_data(t_data *data, char **env)
 			"Could not initialize environment", 1);
 		return (false);
 	}
-    set_shell_lvl(data->env);
+    if(data->env)
+        set_shell_lvl(data->env);
+    if(data->export)
+        set_shell_lvl(data->export);
     // data->export = NULL;
     data->pwd = NULL;
     data->pwd = getcwd(NULL, 0);

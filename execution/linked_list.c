@@ -43,13 +43,10 @@ t_env	*ft_lstnew(char *line)
 	new_node->name = malloc(sizeof(char) * name_len + 1);
 	if(!new_node->name)
 		return (malloc_error("t_env"), NULL);
-	if(value_len != 0)
-	{
-		new_node->value = malloc(sizeof(char) * value_len + 1);
-		if(!new_node->value)
-			return (malloc_error("t_env"), NULL);
-		ft_strlcpy(new_node->value, ft_strchr(line, '=') + 1, value_len + 1);
-	}
+	new_node->value = malloc(sizeof(char) * value_len + 1);
+	if(!new_node->value)
+		return (malloc_error("t_env"), NULL);
+	ft_strlcpy(new_node->value, ft_strchr(line, '=') + 1, value_len + 1);
 	ft_strlcpy(new_node->name, line, name_len + 1);
 	new_node->next = NULL;
 	new_node->previous = NULL;

@@ -103,7 +103,7 @@ int    execute_with_pipes(t_data *data, int npipe)
         tmp = data->cmd;
         pipefd = allocate_pipes(npipe);
         if(!pipefd)
-                return (malloc_error("pipes[][]"));
+                return (print_cmd_error("minishell: pipe", strerror(errno), NULL), 1);
         i = 0;
         signal(SIGINT, handle_fork_sig);
         signal(SIGQUIT, handle_fork_sig);

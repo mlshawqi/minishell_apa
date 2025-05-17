@@ -1,12 +1,27 @@
 #include "../minishell.h"
 
+static int  is_len(char *str1, char *str2, char hint)
+{
+    int     len1;
+    int     len2;
+
+    len1 = ft_strlen(str1);
+    len2 = 0;
+    while(str2[len2] != hint)
+        len2++;
+    if(len1 > len2)
+        return (len1);
+    else
+        return (len2);
+}
+
 int     appand_value(t_env *tmp, char *arg)
 {
     char    *str;
 
     while(tmp)
     {
-        if(ft_strncmp(tmp->name, arg, ft_strlen(tmp->name)) == 0)
+        if(ft_strncmp(tmp->name, arg, is_len(tmp->name, arg, '+')) == 0)
         {
             if(tmp->value)
             {
@@ -23,6 +38,7 @@ int     appand_value(t_env *tmp, char *arg)
     return (-1);
 }
 
+
 void  export_var(t_env **lst, char *var)
 {
     int     len;
@@ -33,8 +49,9 @@ void  export_var(t_env **lst, char *var)
     tmp = *lst;
     while(tmp)
     {
-        if(ft_strncmp(tmp->name, var, ft_strlen(tmp->name)) == 0)
+        if(ft_strncmp(tmp->name, var, is_len(tmp->name, var, '=')) == 0)
         {
+            printf("in found name %s var %s\n", tmp->name, var);
             len = ft_strlen(ft_strchr(var, '=') + 1);
             if(tmp->value)
                 free_str_null(&tmp->value);

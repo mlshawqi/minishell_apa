@@ -52,7 +52,6 @@ int     **allocate_pipes(int count)
                 if(pipe(arr[i]) == -1)
                 {
                         free_tab(arr, i);
-                        perror("pipe failed");
                         return (NULL);
                 }
                 i++;
