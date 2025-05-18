@@ -13,19 +13,21 @@ void	open_outfile_trunc(t_in_out_fds *io, char *file, char *var_filename)
 	// 	print_command_error(io->filename, NULL, strerror(errno), false);
 }
 
-void	parse_trunc(t_cmd **last_cmd, t_separation **token_lst)
+int	parse_trunc(t_cmd **last_cmd, t_separation **token_lst)
 {
 	t_separation	*current_token;
 	t_cmd			*cmd;
 	t_in_out_fds		*red;
+	int	i;
 
 	current_token = *token_lst;
+	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);
 	red = new_node_redirection(REDIR_OUT);
 	if(!red)
-		return ;
-	open_outfile_trunc(red, current_token->next->str,
+		return (malloc_error("t_in_ut_fds"));
+	i = open_file(red, current_token->next->str,
 		current_token->next->str_copy);
 	link_node_redirection(&cmd->io_fds, red);
 	if (current_token->next->next)
@@ -33,4 +35,5 @@ void	parse_trunc(t_cmd **last_cmd, t_separation **token_lst)
 	else
 		current_token = current_token->next;
 	*token_lst = current_token;
+	return (i);
 }

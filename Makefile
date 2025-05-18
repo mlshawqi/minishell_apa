@@ -39,6 +39,7 @@ SRC_EXECUTION = ./execution/linked_list.c ./execution/linked_list2.c ./execution
 	./execution/export2_cmd.c ./execution/exit_cmd.c ./execution/unset_cmd.c  ./execution/execute1.c\
 	./execution/ft_atoi2.c  ./execution/execute.c ./execution/pipe_utils.c ./execution/pipe_utils1.c\
 	./execution/error_print.c ./execution/heredoc2.c ./execution/empty_env.c ./execution/execve_path.c\
+	./execution/exit_pipe.c \
 	# ./execution/libft/ft_strcmp.c ./execution/libft/ft_strlcpy.c ./execution/libft/ft_isdigit.c \
 	# ./execution/libft/ft_strchr.c ./execution/libft/ft_split.c \
 	# .execution/libft/ft_strjoin.c ./execution/libft/ft_strdup.c./execution/libft/ft_strlen.c

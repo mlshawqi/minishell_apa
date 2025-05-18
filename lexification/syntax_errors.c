@@ -8,7 +8,11 @@ bool has_consecutive_ops(t_separation *token_node)
 		return (false);
 
 	prev = token_node->prev;
-
+	if ((prev->type >= INPUT && prev->type <= APPEND)
+        	&& token_node->type == PIPE)
+    	{
+        	return (true);
+    	}
 	if ((prev->type == HEREDOC || prev->type == APPEND)
 		&& token_node->type == PIPE)
 	{

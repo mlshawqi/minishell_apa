@@ -5,6 +5,7 @@ void    handle_sigint_heredoc(int sig)
         if(sig == SIGINT)
 	{
 		write(1, "\n", 1);
+		g_last_exit_code = 130;
 		exit (130);
 	}
 }
@@ -17,12 +18,11 @@ int     handle_parent(int *fdpipe, t_in_out_fds *io, int pid)
 	waitpid(pid, &status, 0);
         if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status) == 130))
         {
-		// print_cmd_error("in heredoc", "ctrl c", NULL);
                 close(fdpipe[0]);
 		if (WTERMSIG(status) == SIGINT) 
 			write(1, "\n", 1);
 		io->fd = -1;
-		g_last_exit_code = 128 + WTERMSIG(status);
+		g_last_exit_code = 130;
                 return (g_last_exit_code);
         }
 	else

@@ -99,12 +99,6 @@ char     *find_program_path(t_env *env, char *cmd)
                 g_last_exit_code = 2;
                 return (NULL);
         }
-        // if(ft_strcmp(cmd, "..") == 0)
-        // {
-        //         print_cmd_error("minishell", "filename argument required", cmd);
-        //         g_last_exit_code = 2;
-        //         return (NULL);
-        // }
         while(cmd[i])
         {
                 if(cmd[i] != '\0' && cmd[i] == '/')

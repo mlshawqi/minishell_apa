@@ -1,24 +1,24 @@
 #include "../minishell.h"
 
-void    kill_all_child(t_data *data, char sig)
-{
-        t_cmd   *cmd;
+// void    kill_all_child(t_data *data, char sig)
+// {
+//         t_cmd   *cmd;
 
-        cmd = data->cmd;
-        while(cmd)
-        {
-                // fprintf(stderr, "at least here in out kill_all_child\n");
-                if(!WIFEXITED(cmd->pipex->status) && !WIFSIGNALED(cmd->pipex->status))
-                {
-                        // fprintf(stderr, "at least here inside kill_all_child\n");
-                        if(sig == 'c')
-                                kill(cmd->pipex->fork_pid, SIGINT);
-                        else if(sig == 'q')
-                                kill(cmd->pipex->fork_pid, SIGQUIT);
-                }
-                cmd = cmd->next;
-        }
-}
+//         cmd = data->cmd;
+//         while(cmd)
+//         {
+//                 // fprintf(stderr, "at least here in out kill_all_child\n");
+//                 if(!WIFEXITED(cmd->pipex->status) && !WIFSIGNALED(cmd->pipex->status))
+//                 {
+//                         // fprintf(stderr, "at least here inside kill_all_child\n");
+//                         if(sig == 'c')
+//                                 kill(cmd->pipex->fork_pid, SIGINT);
+//                         else if(sig == 'q')
+//                                 kill(cmd->pipex->fork_pid, SIGQUIT);
+//                 }
+//                 cmd = cmd->next;
+//         }
+// }
 
 int     wait_for_all(t_data *data)
 {
@@ -30,7 +30,9 @@ int     wait_for_all(t_data *data)
                 waitpid(tmp->pipex->fork_pid, &tmp->pipex->status, 0);
                 if (!tmp->next)
                 {
-                        if(WIFEXITED(tmp->pipex->status))
+                        if(g_last_exit_code == 130 || g_last_exit_code == 131)
+                                return (g_last_exit_code);
+                        else if (WIFEXITED(tmp->pipex->status))
                                 g_last_exit_code = WEXITSTATUS(tmp->pipex->status);
                         return (g_last_exit_code);
                 }
@@ -70,7 +72,6 @@ int    ft_execve_pipe(t_data *data, t_cmd *cmd)
                 return (g_last_exit_code);
         if(execve(cmd->pipex->path,  cmd->args, data->env_arr) == -1)
                 perror("execve");
-        print_cmd_error("here after execve", "---", NULL);
         return (EXIT_FAILURE);       
 }
 
@@ -82,7 +83,9 @@ int    execute_command(t_data *data, t_cmd *cmd)
         {
                 if(cmd->command)
                 {
-                        if(run_builtin_if_exists(data, cmd) == 1)
+                        if(ft_strcmp(cmd->command, "exit") == 0)
+                                g_last_exit_code = exit_cmd_pipe(data, cmd->args + 1);
+                        else if (run_builtin_if_exists(data, cmd) == 1)
                         {
                                 return (ft_execve_pipe(data, cmd));
                         }

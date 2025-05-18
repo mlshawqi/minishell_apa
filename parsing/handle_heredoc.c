@@ -134,21 +134,22 @@ char	*get_delimiter(char *delim, bool *quotes)
 	return (stripped);
 }
 
-void	process_heredoc(t_data *data, t_cmd **last_cmd,
-	t_separation **token_lst)
+int	process_heredoc(t_data *data, t_cmd **last_cmd, t_separation **token_lst)
 {
 	t_separation	*token;
 	t_cmd			*cmd;
 	t_in_out_fds		*red;
+	int	i;
 
 	token = *token_lst;
+	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);
 	red = new_node_redirection(REDIR_HEREDOC);
 	if(!red)
-		return ;
+		return (malloc_error("t_in_ut_fds"));
 	red->heredoc_delimiter = get_delimiter(token->next->str, &(red->heredoc_quotes));
-	fork_heredoc(data, red);
+	i = fork_heredoc(data, red);
 	set_signals();
 	link_node_redirection(&cmd->io_fds, red);
 	if (token->next->next)
@@ -156,5 +157,6 @@ void	process_heredoc(t_data *data, t_cmd **last_cmd,
 	else
 		token = token->next;
 	*token_lst = token;
+	return (i);
 }
 

@@ -14,9 +14,11 @@ void	minishell_interactive(t_data *data)
 			printf("exit\n");
 			break ;
 		}
-		process_user_input(data);
-		if(data->cmd)
-			g_last_exit_code = execution(data);
+		if(process_user_input(data) == true)
+		{
+			if(data->cmd)
+				g_last_exit_code = execution(data);
+		}
 		cleanup_shell_data(data, false);
 	}
 }
