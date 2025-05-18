@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-bool	has_consecutive_ops(t_separation *token_node)
+bool has_consecutive_ops(t_separation *token_node)
 {
 	t_separation	*prev;
 
@@ -8,8 +8,16 @@ bool	has_consecutive_ops(t_separation *token_node)
 		return (false);
 
 	prev = token_node->prev;
+
+	if ((prev->type == HEREDOC || prev->type == APPEND)
+		&& token_node->type == PIPE)
+	{
+		return (true);
+	}
+
 	if (token_node->type == PIPE && prev->type == PIPE)
 		return (true);
+
 	if ((token_node->type >= INPUT && token_node->type <= APPEND)
 		&& (prev->type >= INPUT && prev->type <= APPEND))
 	{
@@ -36,6 +44,7 @@ bool	has_consecutive_ops(t_separation *token_node)
 
 	return (false);
 }
+
 
 static int	check_errors_part_one(t_separation *temp)
 {

@@ -146,27 +146,43 @@ int	find_status(int status, char *str, int i)
 	return (status);
 }
 
-int	malloc_word_separator(int *i, char *str,
+int malloc_word_separator(int *i, char *str,
 	int start, t_data *data)
 {
-	int	type;
+	int type;
 
 	type = is_separator(str, *i);
+
 	if (type)
 	{
-		if (*i != 0 && is_separator(str, *i - 1) == 0)
-			malloc_word(&data->token, str, *i, start);
-		if (type == APPEND || type == HEREDOC || type == PIPE
-			|| type == INPUT || type == TRUNC || type == END || type == AMPER)
+		if ((type == HEREDOC || type == APPEND)
+			&& str[*i + 2] == '|')
 		{
+			if (*i != 0 && is_separator(str, *i - 1) == 0)
+				malloc_word(&data->token, str, *i, start);
 			malloc_separator(&data->token, str, *i, type);
-			if (type == APPEND || type == HEREDOC)
-				(*i)++;
+			malloc_separator(&data->token, str, *i + 2, PIPE);
+			*i += 2;
+			start = *i + 1;
 		}
-		start = *i + 1;
+		else
+		{
+			if (*i != 0 && is_separator(str, *i - 1) == 0)
+				malloc_word(&data->token, str, *i, start);
+
+			if (type == APPEND || type == HEREDOC || type == PIPE
+				|| type == INPUT || type == TRUNC || type == END || type == AMPER)
+			{
+				malloc_separator(&data->token, str, *i, type);
+				if (type == APPEND || type == HEREDOC)
+					(*i)++;
+			}
+			start = *i + 1;
+		}
 	}
 	return (start);
 }
+
 
 int	handle_unclosed_quotes(int status)
 {
