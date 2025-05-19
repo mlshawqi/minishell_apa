@@ -64,7 +64,7 @@ int    handle_redirections(t_data *data, t_cmd *cmd)
                         dup2(saved_stdin, STDIN_FILENO);
                         close(saved_stdout);
                         close(saved_stdin);
-                        free_in_out(cmd->io_fds);
+                        // free_in_out(cmd->io_fds);
                         return (1);
                 }
                 if(dup_redirect(tmp) == 1)

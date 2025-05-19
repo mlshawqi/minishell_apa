@@ -16,9 +16,7 @@ void	free_command(t_cmd *cmd)
 		cmd->pipex = NULL;
 	}
 	if (cmd->io_fds)
-		free_in_out(cmd->io_fds);
-	free(cmd);
-	cmd = NULL;
+		free_in_out(&cmd->io_fds);
 }
 
 
@@ -31,6 +29,8 @@ void	free_command_list(t_cmd **cmd_list)
 	{
 		temp = (*cmd_list)->next;
 		free_command(*cmd_list);
+		free(*cmd_list);
+		*cmd_list = NULL;
 		*cmd_list = temp;
 	}
 	*cmd_list = NULL;

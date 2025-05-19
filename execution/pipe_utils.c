@@ -23,8 +23,8 @@
 int     wait_for_all(t_data *data)
 {
         t_cmd   *tmp;
-        
-        tmp = data->cmd; 
+
+        tmp = data->cmd;
         while (tmp)
         {
                 waitpid(tmp->pipex->fork_pid, &tmp->pipex->status, 0);

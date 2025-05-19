@@ -205,7 +205,7 @@ char **copy_args_to_new_tab(int existing_len, char **new_args, t_cmd *last_cmd, 
 void remove_empty_variables(t_separation **tokens);
 int initialize_echo_arguments(t_separation **token_node, t_cmd *last_cmd);
 int append_echo_arguments(t_separation **token_node, t_cmd *last_cmd);
-void free_in_out(t_in_out_fds *io);
+void free_in_out(t_in_out_fds **io);
 void free_string_array(char **array);
 int	open_file(t_in_out_fds *io, char *file, char *original_filename);
 int	handle_append_redirection(t_cmd **last_cmd, t_separation **token_lst);

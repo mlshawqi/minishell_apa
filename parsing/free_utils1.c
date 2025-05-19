@@ -1,30 +1,28 @@
 #include "../minishell.h"
 
-void	free_in_out(t_in_out_fds *io)
+void	free_in_out(t_in_out_fds **io)
 {
-	t_in_out_fds *tmp;
 	t_in_out_fds	*t;
 
-	tmp = io;
-	while(tmp)
+	while(*io)
 	{
-		if (tmp->heredoc_delimiter)
+		if ((*io)->heredoc_delimiter)
 		{
-			unlink(tmp->filename);
-			free_str_null(&tmp->heredoc_delimiter);
+			// unlink((*io)->filename);
+			free_str_null(&(*io)->heredoc_delimiter);
 		}
-		if (tmp->filename)
-			free_str_null(&tmp->filename);
-		if (tmp->fd != -1)
+		if ((*io)->filename)
+			free_str_null(&(*io)->filename);
+		if ((*io)->fd != -1)
 		{
-			close(tmp->fd);
-			tmp->fd = -1;
+			close((*io)->fd);
+			(*io)->fd = -1;
 		}
-		t = tmp->next;
-		free(tmp);
-		tmp = t;
+		t = (*io)->next;
+		free((*io));
+		(*io) = t;
 	}
-	free(tmp);
+	free(*io);
 }
 
 void	free_string_array(char **array)
@@ -116,6 +114,33 @@ void	execution_cleanup(t_data *data)
 {
 
 }
+void	stiil_allocat(t_data *data)
+{
+	if(data->cmd)
+	{
+		printf("data.cmd\n");
+		// if(data->cmd)
+		// {
+		// 	printf("data.cmd\n");
+		// }
+	}
+	if(data->pwd)
+	{
+		printf("data.pwd\n");
+	}
+	if(data->export)
+	{
+		printf("data.export\n");
+	}
+	if(data->env_arr)
+	{
+		printf("data.env_arr\n");
+	}
+	if(data->env)
+	{
+		printf("data.env\n");
+	}
+}
 
 void	cleanup_shell_data(t_data *data, bool clear_history)
 {
@@ -130,6 +155,7 @@ void	cleanup_shell_data(t_data *data, bool clear_history)
 	}
 	clear_token_list(&data->token, &free_str);
 	free_command_list(&data->cmd);
+	stiil_allocat(data);
 	if (clear_history)
 	{
 		if(data->pwd)
