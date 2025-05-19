@@ -325,6 +325,8 @@ void    handle_fork_sig(int sig);
 int      open_files(t_in_out_fds *redirec);
 int    one_command(t_data *data);
 int    exit_cmd_pipe(t_data *data, char **arg);
+void    set_shell_lvl_export(t_env *env, t_env **export);
+int     valide_shelvl(char *str);
 
 
 #endif

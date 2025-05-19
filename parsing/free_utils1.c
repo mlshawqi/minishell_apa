@@ -3,6 +3,7 @@
 void	free_in_out(t_in_out_fds *io)
 {
 	t_in_out_fds *tmp;
+	t_in_out_fds	*t;
 
 	tmp = io;
 	while(tmp)
@@ -19,7 +20,9 @@ void	free_in_out(t_in_out_fds *io)
 			close(tmp->fd);
 			tmp->fd = -1;
 		}
-		tmp = tmp->next;
+		t = tmp->next;
+		free(tmp);
+		tmp = t;
 	}
 	free(tmp);
 }
@@ -89,6 +92,7 @@ void	free_env_list(t_env **list)
 		free(*list);
 		*list = p;
 	}
+	free(*list);
 	*list = NULL;
 }
 
@@ -130,8 +134,10 @@ void	cleanup_shell_data(t_data *data, bool clear_history)
 	{
 		if(data->pwd)
 			free_str_null(&data->pwd);
-		free_env_list(&data->env);
-		free_env_list(&data->export);
+		if(data->env)
+			free_env_list(&data->env);
+		if(data->export)
+			free_env_list(&data->export);
 		rl_clear_history();
 		exit (g_last_exit_code);
 	}

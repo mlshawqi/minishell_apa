@@ -8,7 +8,6 @@ void	minishell_interactive(t_data *data)
 	{
 		set_signals();
 		data->user_input = readline("minishell~$ ");
-		// configure_noninteractive_signals();
 		if (!data->user_input)
 		{
 			printf("exit\n");
@@ -43,24 +42,18 @@ void	minishell_noninteractive(t_data *data, char *arg)
 	free_string_array(user_inputs);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-    t_data data;
+	t_data	data;
 
-//     ft_memset(&data, 0, sizeof(t_data));
-    if (!ft_initialise_data(&data, env)) {
-        print_command_error("Fatal", NULL, "Could not initialize environment", 1);
-        exit_shell(NULL, EXIT_FAILURE);
-    }
-    if (!validate_startup_args(&data, ac, av)) {
-        exit_shell(&data, EXIT_FAILURE);
-    }
-    if (data.interactive) {
-        minishell_interactive(&data);
-    }
-    else {
-        minishell_noninteractive(&data, av[2]);
-    }
-    exit_shell(&data, g_last_exit_code);
-    exit (g_last_exit_code);
+	ft_initialise_data(&data, env);
+	if (!validate_startup_args(&data, ac, av)) {
+	    exit_shell(&data, EXIT_FAILURE);
+	}
+	if (data.interactive)
+	    minishell_interactive(&data);
+	else
+	    minishell_noninteractive(&data, av[2]);
+	cleanup_shell_data(&data, true);
+	exit (g_last_exit_code);
 }
