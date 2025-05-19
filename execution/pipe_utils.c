@@ -78,7 +78,6 @@ int    ft_execve_pipe(t_data *data, t_cmd *cmd)
 
 int    execute_command(t_data *data, t_cmd *cmd)
 {
-        // int status;
         if(!cmd->io_fds)
         {
                 if(cmd->command)

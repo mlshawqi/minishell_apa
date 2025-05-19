@@ -23,26 +23,25 @@ int     run_builtin_if_exists(t_data *data, t_cmd *cmd)
 
 int      open_files(t_in_out_fds *redirec)
 {
-        if (redirec->filename && redirec->filename[0] != '\0')
+        if (redirec->filename && redirec->filename[0] == '\0')
+                return (1);
+        if(redirec->type == REDIR_IN)
         {
-                if(redirec->type == REDIR_IN)
-                {
-                        redirec->fd = open(redirec->filename, O_RDONLY);
-                        if (redirec->fd == -1)
-                                return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
-                }
-                if(redirec->type == REDIR_OUT)
-                {
-                        redirec->fd = open(redirec->filename, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-                        if (redirec->fd == -1)
-                                return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
-                }
-                if(redirec->type == REDIR_APPEND)
-                {
-                        redirec->fd = open(redirec->filename, O_WRONLY | O_CREAT | O_APPEND, 0664);
-                        if (redirec->fd == -1)
-                                return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
-                }
+                redirec->fd = open(redirec->filename, O_RDONLY);
+                if (redirec->fd == -1)
+                        return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
+        }
+        if(redirec->type == REDIR_OUT)
+        {
+                redirec->fd = open(redirec->filename, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+                if (redirec->fd == -1)
+                        return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
+        }
+        if(redirec->type == REDIR_APPEND)
+        {
+                redirec->fd = open(redirec->filename, O_WRONLY | O_CREAT | O_APPEND, 0664);
+                if (redirec->fd == -1)
+                        return (print_cmd_error(redirec->filename, strerror(errno), NULL), 1);
         }
         return (0);
 }
