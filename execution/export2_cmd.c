@@ -92,15 +92,15 @@ static void    print_export(t_env *lst)
         {
             if(lst->name && (ft_strcmp(lst->name, "_") != 0))
             {
-                printf("declare -x ");
-                printf("%s", lst->name);
+                write(1, "declare -x ", 11);
+                write(1, lst->name, ft_strlen(lst->name));
                 if(lst->value)
                 {
-                    printf("=\"");
-                    printf("%s", lst->value);
-                    printf("\"");
+                    write(1, "=\"", 2);
+                    write(1, lst->value, ft_strlen(lst->value));
+                    write(1, "\"", 1);
                 }
-                printf("\n");
+                write(1, "\n", 1);
             }
             lst = lst->next;
         }

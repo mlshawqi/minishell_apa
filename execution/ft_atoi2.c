@@ -6,7 +6,7 @@ static int	check_overflow(int sign, unsigned long long nbr)
 	{
 		if(nbr > MIN_LONG)
 		{
-			printf("minishell: exit: numeric argument required\n");
+			print_cmd_error("minishell: exit", "numeric argument required", NULL);
 			return (-1);
 		}
 	}
@@ -14,7 +14,7 @@ static int	check_overflow(int sign, unsigned long long nbr)
 	{
 		if(nbr > MAX_LONG)
 		{
-			printf("minishell: exit: numeric argument required\n");
+			print_cmd_error("minishell: exit", "numeric argument required", NULL);
 			return (-1);
 		}
 	}

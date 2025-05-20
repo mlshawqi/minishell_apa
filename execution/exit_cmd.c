@@ -72,8 +72,7 @@ int    exit_cmd(t_data *data, char **arg)
             g_last_exit_code = 2;
             return (1);
         }
-
-        write(1, "exit\n", 5);
+        write(2, "exit\n", 5);
         g_last_exit_code = ft_atoii(arg[0]);
         cleanup_shell_data(data, true);
         return (0);

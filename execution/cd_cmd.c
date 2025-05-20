@@ -11,7 +11,7 @@ static int  change_home(t_env *env)
         {
             if((env->value[0] != '\0') &&  chdir(env->value) == -1)
             {
-                print_cmd_error("minishell", "No such file or directory", env->value);
+                print_cmd_error("minishell: cd", "No such file or directory", env->value);
                 return (-1);
             }
             is_foud++;
@@ -21,7 +21,7 @@ static int  change_home(t_env *env)
     }
     if(is_foud == 0)
     {
-        printf("cd: HOME not set\n");
+        print_cmd_error("minishell: cd","HOME not set", NULL);
         return (-1);
     }
     return (0);
@@ -95,12 +95,12 @@ int    cd_cmd(char **args, t_env **env, t_data *data)
     }
     else if(args[1])
     {
-        print_cmd_error("cd", "too many arguments", NULL);
+        print_cmd_error("minishell: cd", "too many arguments", NULL);
         return (1);
     }
     else if(chdir(*args) == -1)
     {
-        print_cmd_error("minishell", "No such file or directory",*args);
+        print_cmd_error("minishell: cd", "No such file or directory",*args);
         return (1);
     }
     update_pwd2(data, env);
