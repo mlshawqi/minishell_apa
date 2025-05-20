@@ -58,6 +58,7 @@ static int  not_valid(char *str)
         g_last_exit_code = 127;
         return (127);
     }
+    return (0);
 }
 
 int    env_cmd(t_env *lst, char **arg)

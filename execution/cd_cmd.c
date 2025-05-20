@@ -1,6 +1,22 @@
 #include "../minishell.h"
 
-static int  change_home(t_env *env)
+static int  hanlde_shortcut(char *str, char *path)
+{
+    char    *new_path;
+
+    new_path = ft_strjoin(str, ft_strchr(path, '~') + 1);
+    if(chdir(new_path) == -1)
+    {
+        print_cmd_error("minishell: cd", "No such file or directory", new_path);
+        free_str_null(&new_path);
+        g_last_exit_code = 1;
+        return (1);
+    }
+    free_str_null(&new_path);
+    return (0);
+}
+
+static int  handle_home_shortcut(t_env *env, char *str)
 {
     int is_foud;
 
@@ -13,6 +29,11 @@ static int  change_home(t_env *env)
             {
                 print_cmd_error("minishell: cd", "No such file or directory", env->value);
                 return (-1);
+            }
+            if(str)
+            {
+                if(hanlde_shortcut(env->value, str) == 1)
+                    return (-1);
             }
             is_foud++;
             break;
@@ -88,10 +109,18 @@ int    cd_cmd(char **args, t_env **env, t_data *data)
     update_pwd(&data->export, old, 'O');
     if(old)
         free_str_null(&old);
-    if((!args || !args[0]) || (ft_strcmp(args[0], "~") == 0 && !args[1]))
+    if((!args || !args[0]) || (args[0][0] == '~') && !args[1])
     {
-        if(change_home(*env) == -1)
-            return (1);
+        if(args && args[0] && (ft_strcmp(args[0], "~") == 0))
+        {
+            if(handle_home_shortcut(*env, NULL) == -1)
+                return (1);
+        }
+        else 
+        {
+            if(handle_home_shortcut(*env, args[0]) == -1)
+                return (1);
+        }
     }
     else if(args[1])
     {
