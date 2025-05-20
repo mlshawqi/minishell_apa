@@ -35,6 +35,8 @@ static int      is_longlong(char *str)
         i = 0;
         len = 0;
         sign = 0;
+        if(str && str[i] == '\0')
+            return (-1);
         while(str[i])
         {
             if(str[i] == '-' || str[i] == '+')
@@ -56,12 +58,6 @@ int    exit_cmd(t_data *data, char **arg)
             g_last_exit_code = 0;
             cleanup_shell_data(data, true);
         }
-        if (arg[1])
-        {
-            write(2, "exit\n", 5);
-            print_cmd_error("minishell", "exit: too many arguments", NULL);
-            return (1);
-        }
         if ((invalid_numeric_input(arg[0]) == 1) || (is_longlong(arg[0]) == -1))
         {
             write(2, "exit\n", 5);
@@ -69,6 +65,14 @@ int    exit_cmd(t_data *data, char **arg)
             g_last_exit_code = 2;
             cleanup_shell_data(data, true);
         }
+        if (arg[1])
+        {
+            write(2, "exit\n", 5);
+            print_cmd_error("minishell", "exit: too many arguments", NULL);
+            g_last_exit_code = 2;
+            return (1);
+        }
+
         write(1, "exit\n", 5);
         g_last_exit_code = ft_atoii(arg[0]);
         cleanup_shell_data(data, true);

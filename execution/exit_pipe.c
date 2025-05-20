@@ -55,16 +55,17 @@ int    exit_cmd_pipe(t_data *data, char **arg)
             g_last_exit_code = 0;
             cleanup_shell_data(data, true);
         }
-        if (arg[1])
-        {
-            print_cmd_error("minishell", "exit: too many arguments", NULL);
-            return (1);
-        }
         if ((invalid_numeric_input(arg[0]) == 1) || (is_longlong(arg[0]) == -1))
         {
             print_cmd_error("minishell: exit", "numeric argument required", arg[0]);
             g_last_exit_code = 2;
             cleanup_shell_data(data, true);
+        }
+        if (arg[1])
+        {
+            print_cmd_error("minishell", "exit: too many arguments", NULL);
+            g_last_exit_code = 2;
+            return (2);
         }
         g_last_exit_code = ft_atoii(arg[0]);
         cleanup_shell_data(data, true);

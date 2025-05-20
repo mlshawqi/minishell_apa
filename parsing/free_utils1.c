@@ -114,33 +114,33 @@ void	execution_cleanup(t_data *data)
 {
 
 }
-void	stiil_allocat(t_data *data)
-{
-	if(data->cmd)
-	{
-		printf("data.cmd\n");
-		// if(data->cmd)
-		// {
-		// 	printf("data.cmd\n");
-		// }
-	}
-	if(data->pwd)
-	{
-		printf("data.pwd\n");
-	}
-	if(data->export)
-	{
-		printf("data.export\n");
-	}
-	if(data->env_arr)
-	{
-		printf("data.env_arr\n");
-	}
-	if(data->env)
-	{
-		printf("data.env\n");
-	}
-}
+// void	stiil_allocat(t_data *data)
+// {
+// 	if(data->cmd)
+// 	{
+// 		printf("data.cmd\n");
+// 		// if(data->cmd)
+// 		// {
+// 		// 	printf("data.cmd\n");
+// 		// }
+// 	}
+// 	if(data->pwd)
+// 	{
+// 		printf("data.pwd\n");
+// 	}
+// 	if(data->export)
+// 	{
+// 		printf("data.export\n");
+// 	}
+// 	if(data->env_arr)
+// 	{
+// 		printf("data.env_arr\n");
+// 	}
+// 	if(data->env)
+// 	{
+// 		printf("data.env\n");
+// 	}
+// }
 
 void	cleanup_shell_data(t_data *data, bool clear_history)
 {
@@ -155,7 +155,7 @@ void	cleanup_shell_data(t_data *data, bool clear_history)
 	}
 	clear_token_list(&data->token, &free_str);
 	free_command_list(&data->cmd);
-	stiil_allocat(data);
+	// stiil_allocat(data);
 	if (clear_history)
 	{
 		if(data->pwd)
