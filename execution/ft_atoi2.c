@@ -1,20 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: machaouk <marvin@42.fr>                    #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-05-21 09:59:05 by machaouk          #+#    #+#             */
+/*   Updated: 2025-05-21 09:59:05 by machaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
+
+int	is_len(char *str1, char *str2, char hint)
+{
+	int	len1;
+	int	len2;
+
+	len1 = ft_strlen(str1);
+	len2 = 0;
+	while (str2[len2] != hint)
+		len2++;
+	if (len1 > len2)
+		return (len1);
+	else
+		return (len2);
+}
 
 static int	check_overflow(int sign, unsigned long long nbr)
 {
 	if (sign < 0)
 	{
-		if(nbr > MIN_LONG)
+		if (nbr > MIN_LONG)
 		{
-			print_cmd_error("minishell: exit", "numeric argument required", NULL);
+			print_cmd_error("minishell: exit", "numeric argument required",
+				NULL);
 			return (-1);
 		}
 	}
 	else
 	{
-		if(nbr > MAX_LONG)
+		if (nbr > MAX_LONG)
 		{
-			print_cmd_error("minishell: exit", "numeric argument required", NULL);
+			print_cmd_error("minishell: exit", "numeric argument required",
+				NULL);
 			return (-1);
 		}
 	}
@@ -24,8 +53,8 @@ static int	check_overflow(int sign, unsigned long long nbr)
 long long	ft_atoii(const char *str)
 {
 	unsigned long long	result;
-	int		sign;
-	int		i;
+	int					sign;
+	int					i;
 
 	result = 0;
 	sign = 1;

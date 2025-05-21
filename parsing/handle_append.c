@@ -23,6 +23,14 @@ int	handle_append_redirection(t_cmd **last_cmd, t_separation **token_lst)
 	int	i;
 
 	temp = *token_lst;
+	if (g_last_exit_code == 1)
+	{
+		if (temp->next && temp->next->next)
+			*token_lst = temp->next->next;
+		else if (temp->next)
+			*token_lst = temp->next;
+		return (0);
+	}
 	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);
@@ -31,7 +39,7 @@ int	handle_append_redirection(t_cmd **last_cmd, t_separation **token_lst)
 		return (malloc_error("t_in_ut_fds"));
 	i = open_file(red, temp->next->str, temp->next->str_copy);
 	link_node_redirection(&cmd->io_fds, red);
-	if (temp->next->next)
+	if (temp->next && temp->next->next)
 		temp = temp->next->next;
 	else
 		temp = temp->next;

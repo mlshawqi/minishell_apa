@@ -1,5 +1,16 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   linked_list2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: machaouk <marvin@42.fr>                    #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-05-21 09:59:29 by machaouk          #+#    #+#             */
+/*   Updated: 2025-05-21 09:59:29 by machaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../minishell.h"
 
 void	ft_lstadd_back(t_env **lst, t_env *new)
 {
@@ -57,6 +68,7 @@ void	ft_lstclear(t_env **lst)
 	}
 	*lst = NULL;
 }
+
 void	ft_lstdelone(t_env *lst)
 {
 	if (lst == NULL)

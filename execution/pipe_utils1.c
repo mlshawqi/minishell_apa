@@ -1,74 +1,86 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_utils1.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: machaouk <marvin@42.fr>                    #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-05-21 09:59:44 by machaouk          #+#    #+#             */
+/*   Updated: 2025-05-21 09:59:44 by machaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void    free_pipes(int **arr)
+void	free_pipes(int **arr)
 {
-        int     i;
+	int	i;
 
-        if (!arr)
-                return;
-        i = 0;
-        while(arr[i])
-        {
-                free(arr[i]);
-                arr[i] = NULL;
-                i++;
-        }
-        free(arr);
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
 }
 
-void    free_tab(int **arr, int i)
+void	free_tab(int **arr, int i)
 {
-        if(!arr)
-                return ;
-        while (i >= 0)
-        {
-                if(arr[i])
-                {
-                        free(arr[i]);
-                        arr[i] = NULL;
-                }
-                i--;
-        }
-        free(arr);
+	if (!arr)
+		return ;
+	while (i >= 0)
+	{
+		if (arr[i])
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+		}
+		i--;
+	}
+	free(arr);
 }
 
-int     **allocate_pipes(int count)
+int	**allocate_pipes(int count)
 {
-        int     **arr;
-        int     i;
+	int	**arr;
+	int	i;
 
-        arr = malloc(sizeof(int *) * (count + 1));
-        if(!arr)
-                return (NULL);
-        i = 0;
-        while(i < count)
-        {
-                arr[i] = malloc(sizeof(int) * 2);
-                if(!arr[i])
-                {
-                        free_tab(arr, i - 1);
-                        return (NULL);
-                }
-                if(pipe(arr[i]) == -1)
-                {
-                        free_tab(arr, i);
-                        return (NULL);
-                }
-                i++;
-        }
-        arr[i] = NULL;
-        return (arr);
+	arr = malloc(sizeof(int *) * (count + 1));
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		arr[i] = malloc(sizeof(int) * 2);
+		if (!arr[i])
+		{
+			free_tab(arr, i - 1);
+			return (NULL);
+		}
+		if (pipe(arr[i]) == -1)
+		{
+			free_tab(arr, i);
+			return (NULL);
+		}
+		i++;
+	}
+	arr[i] = NULL;
+	return (arr);
 }
 
-void    close_pipes(int **pipes,int count)
+void	close_pipes(int **pipes, int count)
 {
-        int     i;
+	int	i;
 
-        i = 0;
-        while (i < count)
-        {
-                close(pipes[i][0]);
-                close(pipes[i][1]);
-                i++;
-        }
+	i = 0;
+	while (i < count)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
 }

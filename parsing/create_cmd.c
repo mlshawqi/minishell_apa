@@ -44,7 +44,10 @@ int	ft_create_commands(t_data *data, t_separation *token)
 		else if (cur->type == APPEND)
 			value = handle_append_redirection(&data->cmd, &cur);
 		else if (cur->type == PIPE)
+		{
 			handle_pipe(&data->cmd, &cur);
+			g_last_exit_code = 0;
+		}
 		else if (cur->type == END)
 			break ;
 	}

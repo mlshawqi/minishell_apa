@@ -1,6 +1,5 @@
 NAME	= minishell
 
-# Fichiers sources
 SRCS	= 	./lexification/test1.c \
 			./lexification/util1.c \
 			./lexification/syntax_errors.c \
@@ -39,45 +38,33 @@ SRC_EXECUTION = ./execution/linked_list.c ./execution/linked_list2.c ./execution
 	./execution/export2_cmd.c ./execution/exit_cmd.c ./execution/unset_cmd.c  ./execution/execute1.c\
 	./execution/ft_atoi2.c  ./execution/execute.c ./execution/pipe_utils.c ./execution/pipe_utils1.c\
 	./execution/error_print.c ./execution/heredoc2.c ./execution/empty_env.c ./execution/execve_path.c\
-	./execution/exit_pipe.c \
-	# ./execution/libft/ft_strcmp.c ./execution/libft/ft_strlcpy.c ./execution/libft/ft_isdigit.c \
-	# ./execution/libft/ft_strchr.c ./execution/libft/ft_split.c \
-	# .execution/libft/ft_strjoin.c ./execution/libft/ft_strdup.c./execution/libft/ft_strlen.c
+	./execution/exit_pipe.c ./execution/exec_redirections.c\
 
-# Objets
 OBJS	= $(SRCS:.c=.o)
 OBJS_EXECUTION = $(SRC_EXECUTION:.c=.o)
 
-# Options de compilation
 FLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address
 CC		= cc
 
-# Bibliothèque libft
 LIBFT	= ./libft/libft.a
 
-# Compilation principale
 $(NAME): $(LIBFT) $(OBJS) $(OBJS_EXECUTION)
 	$(CC) $(FLAGS) $(OBJS) $(OBJS_EXECUTION) -o $(NAME) $(LIBFT) -lreadline
 
-# Compilation de libft si nécessaire
 $(LIBFT):
 	make -C ./libft
 
-# Compilation de tous les fichiers
 all: $(NAME)
 
-# Nettoyage des fichiers objets
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJS_EXECUTION)
 	make -C ./libft clean
 
-# Nettoyage total (exécutable + objets)
 fclean: clean
 	rm -rf $(NAME)
 	make -C ./libft fclean
 
-# Recompilation propre
 re: fclean all
 
 .PHONY: all clean fclean re

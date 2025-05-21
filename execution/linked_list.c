@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   linked_list.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: machaouk <marvin@42.fr>                    #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-05-21 09:59:20 by machaouk          #+#    #+#             */
+/*   Updated: 2025-05-21 09:59:20 by machaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void    copy_env(char **env, t_env **list)
+void	copy_env(char **env, t_env **list)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(env[i])
-    {
-        link_node(list, ft_lstnew(env[i]));
-        i++;
-    }
+	i = 0;
+	while (env[i])
+	{
+		link_node(list, ft_lstnew(env[i]));
+		i++;
+	}
 }
 
 void	link_node(t_env **head, t_env *new_node)
@@ -31,8 +43,8 @@ void	link_node(t_env **head, t_env *new_node)
 t_env	*ft_lstnew(char *line)
 {
 	t_env	*new_node;
-	int	name_len;
-	int	value_len;
+	int		name_len;
+	int		value_len;
 
 	name_len = ft_strchr(line, '=') - line;
 	value_len = ft_strlen(ft_strchr(line, '=') + 1);
@@ -41,10 +53,10 @@ t_env	*ft_lstnew(char *line)
 		return (malloc_error("t_env"), NULL);
 	ft_memset(new_node, 0, sizeof(t_env));
 	new_node->name = malloc(sizeof(char) * name_len + 1);
-	if(!new_node->name)
+	if (!new_node->name)
 		return (malloc_error("t_env"), NULL);
 	new_node->value = malloc(sizeof(char) * value_len + 1);
-	if(!new_node->value)
+	if (!new_node->value)
 		return (malloc_error("t_env"), NULL);
 	ft_strlcpy(new_node->value, ft_strchr(line, '=') + 1, value_len + 1);
 	ft_strlcpy(new_node->name, line, name_len + 1);
@@ -53,16 +65,17 @@ t_env	*ft_lstnew(char *line)
 	return (new_node);
 }
 
-t_env    *new_node(char *arg)
+t_env	*new_node(char *arg)
 {
 	t_env	*new;
+	int		len;
 
 	new = malloc(sizeof(t_env));
-	if(!new)
+	if (!new)
 		return (malloc_error("t_env"), NULL);
-	int len = (ft_strchr(arg, '+') - arg);
+	len = (ft_strchr(arg, '+') - arg);
 	new->name = malloc(sizeof(char) * (len + 1));
-	if(!new->name)
+	if (!new->name)
 	{
 		free(new);
 		return (malloc_error("t_env"), NULL);
@@ -74,3 +87,17 @@ t_env    *new_node(char *arg)
 	return (new);
 }
 
+t_env	*creat_node(char *name, char *value)
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (malloc_error("t_env"), NULL);
+	ft_memset(node, 0, sizeof(t_env));
+	if (name)
+		node->name = ft_strdup(name);
+	if (value)
+		node->value = ft_strdup(value);
+	return (node);
+}

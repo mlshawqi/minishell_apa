@@ -23,6 +23,33 @@ static char *find_env_var(t_env *env, char *var)
     return (NULL);
 }
 
+char *clean_spaces(const char *str) {
+    if (!str) return NULL;
+
+    int len = strlen(str);
+    char *result = malloc(len + 1);
+    if (!result) return NULL;
+
+    int i = 0, j = 0;
+    int in_word = 0;
+    while (isspace(str[i])) i++;
+
+    for (; str[i]; i++) {
+        if (!isspace(str[i])) {
+            result[j++] = str[i];
+            in_word = 1;
+        } else if (in_word) {
+            result[j++] = ' ';
+            in_word = 0;
+            while (isspace(str[i + 1])) i++;
+        }
+    }
+    if (j > 0 && result[j - 1] == ' ')
+        j--;
+
+    result[j] = '\0';
+    return result;
+}
 char *get_value(t_separation *token, char *str, t_env *env_list)
 {
     char *value;
@@ -33,7 +60,7 @@ char *get_value(t_separation *token, char *str, t_env *env_list)
     {
         if (token != NULL)
             token->is_var = true;
-        value = find_env_var(env_list, var);
+        value = clean_spaces(find_env_var(env_list, var));
     }
     else if (var && ft_strcmp(var, "?") == 0)
         value = ft_itoa(g_last_exit_code);
@@ -42,5 +69,3 @@ char *get_value(t_separation *token, char *str, t_env *env_list)
     free_str(var);
     return (value);
 }
-
-

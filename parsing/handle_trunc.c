@@ -13,24 +13,31 @@
 // 	// 	print_command_error(io->filename, NULL, strerror(errno), false);
 // }
 
-int	parse_trunc(t_cmd **last_cmd, t_separation **token_lst)
+int	parse_trunc(t_cmd **last_cmd, t_separation **token_lst) 
 {
 	t_separation	*current_token;
 	t_cmd			*cmd;
-	t_in_out_fds		*red;
-	int	i;
+	t_in_out_fds	*red;
+	int				i;
 
 	current_token = *token_lst;
+	if (g_last_exit_code == 1)
+	{
+		if (current_token->next && current_token->next->next)
+			*token_lst = current_token->next->next;
+		else if (current_token->next)
+			*token_lst = current_token->next;
+		return (0);
+	}
 	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);
 	red = new_node_redirection(REDIR_OUT);
-	if(!red)
-		return (malloc_error("t_in_ut_fds"));
-	i = open_file(red, current_token->next->str,
-		current_token->next->str_copy);
+	if (!red)
+		return (malloc_error("t_in_out_fds"));
+	i = open_file(red, current_token->next->str, current_token->next->str_copy);
 	link_node_redirection(&cmd->io_fds, red);
-	if (current_token->next->next)
+	if (current_token->next && current_token->next->next)
 		current_token = current_token->next->next;
 	else
 		current_token = current_token->next;
