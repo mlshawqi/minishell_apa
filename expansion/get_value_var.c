@@ -53,6 +53,7 @@ char *clean_spaces(const char *str) {
 char *get_value(t_separation *token, char *str, t_env *env_list)
 {
     char *value;
+    char **arr;
     char *var;
 
     var = extract_variable(str);
@@ -60,7 +61,9 @@ char *get_value(t_separation *token, char *str, t_env *env_list)
     {
         if (token != NULL)
             token->is_var = true;
-        value = clean_spaces(find_env_var(env_list, var));
+        value =  find_env_var(env_list, var);
+        if(value)
+            arr = ft_split(value, ' ');
     }
     else if (var && ft_strcmp(var, "?") == 0)
         value = ft_itoa(g_last_exit_code);

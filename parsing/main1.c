@@ -34,9 +34,11 @@ void	minishell_noninteractive(t_data *data, char *arg)
 	if (user_inputs[i])
 	{
 		data->user_input = ft_strdup(user_inputs[i]);
-		process_user_input(data);
-		if(data->cmd)
-			execution(data);
+		if(process_user_input(data) == true)
+		{
+			if(data->cmd)
+				g_last_exit_code = execution(data);
+		}
 		cleanup_shell_data(data, false);
 	}
 	free_string_array(user_inputs);

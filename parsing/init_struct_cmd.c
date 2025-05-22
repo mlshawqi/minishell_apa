@@ -89,6 +89,7 @@ bool	ft_initialise_data(t_data *data, char **env)
     if(data->export)
         set_shell_lvl_export(data->env, &data->export);
     data->pwd = NULL;
+    data->is_ctrlc = 0;
     data->pwd = getcwd(NULL, 0);
     data->env_arr = NULL;
 	data->token = NULL;

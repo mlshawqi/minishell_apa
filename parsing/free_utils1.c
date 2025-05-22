@@ -146,6 +146,7 @@ void	cleanup_shell_data(t_data *data, bool clear_history)
 {
 	if (!data)
 		return ;
+	data->is_ctrlc = 0;
 	free_str_null(&data->user_input);
 	data->user_input = NULL;
 	if(data->env_arr)

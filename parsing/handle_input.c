@@ -32,9 +32,10 @@ int	open_file(t_in_out_fds *io, char *file, char *original_filename)
 	word_count = count_words(file);
 	if (word_count != 1 || !file || file[0] == '\0')
 	{
-		if (g_last_exit_code == 0)
-			print_command_error(original_filename, NULL, "ambiguous redirect", false);
-		g_last_exit_code = 1;
+		// if (g_last_exit_code == 0)
+		// 	print_command_error(original_filename, NULL, "ambiguous redirect", false);
+		// g_last_exit_code = 1;
+		io->filename = ft_strdup(original_filename);
 		return (0);
 	}
 	io->filename = ft_strdup(file);

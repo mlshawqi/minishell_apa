@@ -23,12 +23,10 @@ void	initialize_no_arg_commands(t_data *data)
 int	ft_create_commands(t_data *data, t_separation *token)
 {
 	t_separation	*cur;
-	int	value;
 
 	cur = token;
-	value = 0;
 	if (cur->type == END)
-		return (value);
+		return (0);
 	while (cur->next != NULL)
 	{
 		if (cur == token)
@@ -36,21 +34,21 @@ int	ft_create_commands(t_data *data, t_separation *token)
 		if (cur->type == WORD || cur->type == VAR)
 			parse_word_token(&data->cmd, &cur);
 		else if (cur->type == INPUT)
-			value = handle_input_redirection(&data->cmd, &cur);
+			handle_input_redirection(&data->cmd, &cur);
 		else if (cur->type == TRUNC)
-			value = parse_trunc(&data->cmd, &cur);
+			parse_trunc(&data->cmd, &cur);
 		else if (cur->type == HEREDOC)
-			value = process_heredoc(data, &data->cmd, &cur);
+			process_heredoc(data, &data->cmd, &cur);
 		else if (cur->type == APPEND)
-			value = handle_append_redirection(&data->cmd, &cur);
+			handle_append_redirection(&data->cmd, &cur);
 		else if (cur->type == PIPE)
 		{
 			handle_pipe(&data->cmd, &cur);
-			g_last_exit_code = 0;
+			// g_last_exit_code = 0;
 		}
 		else if (cur->type == END)
 			break ;
 	}
 	initialize_no_arg_commands(data);
-	return (value);
+	return (data->is_ctrlc);
 }

@@ -149,14 +149,17 @@ int	process_heredoc(t_data *data, t_cmd **last_cmd, t_separation **token_lst)
 	if(!red)
 		return (malloc_error("t_in_ut_fds"));
 	red->heredoc_delimiter = get_delimiter(token->next->str, &(red->heredoc_quotes));
-	i = fork_heredoc(data, red);
-	set_signals();
+	if(data->is_ctrlc != 130)
+	{
+		fork_heredoc(data, red);
+		set_signals();
+	}
 	link_node_redirection(&cmd->io_fds, red);
 	if (token->next->next)
 		token = token->next->next;
 	else
 		token = token->next;
 	*token_lst = token;
-	return (i);
+	return (0);
 }
 

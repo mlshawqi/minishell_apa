@@ -96,6 +96,7 @@ typedef struct s_data
 	t_env				*env;
 	char				**env_arr;
 	char				*pwd;
+	int				is_ctrlc;
 	// char		*working_dir;
 	// char		*old_working_dir;
 	t_cmd				*cmd;

@@ -68,6 +68,9 @@ int	fork_heredoc(t_data *data, t_in_out_fds *io)
 		exit(write_heredoc_input(data, io, fdpipe[1]));
 	}
 	else
-		return (handle_parent(fdpipe, io, pid));
+	{
+		data->is_ctrlc =  handle_parent(fdpipe, io, pid);
+		return (data->is_ctrlc);
+	}
 	return (0);
 }

@@ -16,9 +16,6 @@ static bool	is_input_only_spaces(char *input)
 
 bool	process_user_input(t_data *data)
 {
-    int     status;
-
-    status = 0;
     if (ft_strcmp(data->user_input, "\0") == 0)
         return (false);
     if (is_input_only_spaces(data->user_input))
@@ -32,10 +29,10 @@ bool	process_user_input(t_data *data)
         return (false);
     expand_variables(data, &data->token);
     process_quotes(data);
-    status = ft_create_commands(data, data->token);
-    if (status != 0)
+    ft_create_commands(data, data->token);
+    if (data->is_ctrlc == 130)
     {
-        g_last_exit_code = status;
+        g_last_exit_code = 130;
         return (false);
     }
     // display_pipeline_commands(data);
