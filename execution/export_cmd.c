@@ -83,7 +83,9 @@ static int	valide_name(t_env **env, t_env **export, char *arg)
 		break ;
 	}
 	g_last_exit_code = 1;
-	print_cmd_error("minishell: export", "not a valid identifier", arg);
+	write(2, "minishell: export: `", 20);
+	write(2, arg, ft_strlen(arg));
+	write(2, "': not a valid identifier\n", 26);
 	return (1);
 }
 

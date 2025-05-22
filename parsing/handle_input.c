@@ -100,14 +100,14 @@ int	handle_input_redirection(t_cmd **last_cmd, t_separation **token_lst)
 	int	i;
 
 	temp = *token_lst;
-	if (g_last_exit_code == 1)
-	{
-		if (temp->next && temp->next->next)
-			*token_lst = temp->next->next;
-		else if (temp->next)
-			*token_lst = temp->next;
-		return (0);
-	}
+	// if (g_last_exit_code == 1)
+	// {
+	// 	if (temp->next && temp->next->next)
+	// 		*token_lst = temp->next->next;
+	// 	else if (temp->next)
+	// 		*token_lst = temp->next;
+	// 	return (0);
+	// }
 	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);
