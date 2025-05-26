@@ -61,10 +61,16 @@ char	*relative_path(t_env *env, char *cmd)
 	{
 		if (ft_strcmp(tmp_env->name, "PATH") == 0)
 		{
-			if (tmp_env->value)
+			if (tmp_env->value && tmp_env->value[0] != '\0')
 				arr = ft_split(tmp_env->value, ':');
 		}
 		tmp_env = tmp_env->next;
+	}
+	if(!arr)
+	{
+		print_cmd_error("minishell", "No such file or directory", cmd);
+		g_last_exit_code = 127;
+		return (NULL);
 	}
 	path = valid_path(cmd, arr);
 	if (arr)

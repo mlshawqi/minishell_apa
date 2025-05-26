@@ -76,6 +76,11 @@ bool	check_heredoc_line(t_data *data, char **line,
 			*success = false;
 			return (false);
 		}
+		if (ft_strcmp(*line, io->heredoc_delimiter) == 0)
+		{
+			*success = true;
+			return (false);
+		}
 	}
 	return (true);
 }
@@ -95,6 +100,7 @@ int	write_heredoc_input(t_data *data, t_in_out_fds *io, int fd)
 		ft_putendl_fd(line, fd);
 		free_str_null(&line);
 	}
+	close(fd);
 	free_str_null(&line);
 	exit (0);
 }
