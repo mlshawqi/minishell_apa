@@ -52,7 +52,7 @@ int	replace_variable(t_separation **token, char *value, int idx)
 	{
 		if (remove_variable(token, (*token)->str, idx) == 1)
 		{
-			free_str(value);
+			free_str_null(&value);
 			return (1);
 		}
 	}
@@ -60,11 +60,11 @@ int	replace_variable(t_separation **token, char *value, int idx)
 	{
 		if (!replace_and_update(token, (*token)->str, value, idx))
 		{
-			free_str(value);
+			free_str_null(&value);
 			return (1);
 		}
 	}
-	free_str(value);
+	free_str_null(&value);
 	return (0);
 }
 

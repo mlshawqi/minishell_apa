@@ -97,11 +97,15 @@ int	write_heredoc_input(t_data *data, t_in_out_fds *io, int fd)
 		line = readline(">");
 		if (!check_heredoc_line(data, &line, io, &success))
 			break ;
-		ft_putendl_fd(line, fd);
+		// ft_putendl_fd(line, fd);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free_str_null(&line);
 	}
 	close(fd);
 	free_str_null(&line);
+	g_last_exit_code = 0;
+	cleanup_shell_data(data, true);
 	exit (0);
 }
 
@@ -128,7 +132,6 @@ char	*get_delimiter(char *delim, bool *quotes)
 	stripped = ft_calloc(ft_strlen(delim) + 1, sizeof(char));
 	if (!stripped)
 		return (NULL);
-
 	while (delim[i])
 	{
 		if (delim[i] == '\'' || delim[i] == '\"')
@@ -155,12 +158,12 @@ int	process_heredoc(t_data *data, t_cmd **last_cmd, t_separation **token_lst)
 	if(!red)
 		return (malloc_error("t_in_ut_fds"));
 	red->heredoc_delimiter = get_delimiter(token->next->str, &(red->heredoc_quotes));
+	link_node_redirection(&cmd->io_fds, red);
 	if(data->is_ctrlc != 130)
 	{
 		fork_heredoc(data, red);
 		set_signals();
 	}
-	link_node_redirection(&cmd->io_fds, red);
 	if (token->next->next)
 		token = token->next->next;
 	else

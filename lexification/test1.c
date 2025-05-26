@@ -191,6 +191,7 @@ int	handle_unclosed_quotes(int status)
 	else if (status == SQUOTE)
 		display_error_message("unclosed SQUOTES", "\'", true);
 	display_error_message("syntax error", "unexpected end of file", false);
+	g_last_exit_code = 2;
 	return (1);
 }
 

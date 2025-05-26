@@ -30,11 +30,11 @@
 
 extern int				g_last_exit_code;
 
-typedef struct s_collect_malloc
-{
-	void	*ptr;
-	struct s_collect_malloc *next;
-}	t_collect_malloc;
+// typedef struct s_collect_malloc
+// {
+// 	void	*ptr;
+// 	struct s_collect_malloc *next;
+// }	t_collect_malloc;
 
 
 typedef struct s_separation

@@ -17,6 +17,8 @@ void	free_command(t_cmd *cmd)
 	}
 	if (cmd->io_fds)
 		free_in_out(&cmd->io_fds);
+	if(cmd->io_fds)
+		printf("------------still not fd clear\n");
 }
 
 
