@@ -87,12 +87,19 @@ static int	check_errors_part_one(t_separation *temp)
 	if (temp->type == WORD && temp->str)
 	{
     	char c = temp->str[0];
-    	if (c == '(' || c == ')' || c == '!' || c == ';' || c == '{' || c == '}')
-    	{
-        	display_error_message("bash: syntax error near unexpected token",
-            	temp->str, true);
-        	return (FAILURE);
-    	}
+	char *tmp = temp->str;
+	int i = 0;
+	while(tmp[i])
+	{
+		c = tmp[i];
+		if (c == '(' || c == ')' || c == '!' || c == ';' || c == '{' || c == '}')
+		{
+		    display_error_message("bash: syntax error near unexpected token",
+			temp->str, true);
+		    return (FAILURE);
+		}
+		i++;
+	}
 	}
 	if (temp->type == AMPER)
 	{
