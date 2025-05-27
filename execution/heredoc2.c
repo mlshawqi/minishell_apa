@@ -42,7 +42,10 @@ int	handle_parent(int *fdpipe, t_in_out_fds *io, int pid)
 	{
 		io->fd = fdpipe[0];
 		if (WIFEXITED(status))
+		{
+			g_last_exit_code = WEXITSTATUS(status);
 			return (WEXITSTATUS(status));
+		}
 	}
 	return (0);
 }

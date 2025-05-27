@@ -66,6 +66,7 @@ int	ft_execve_pipe(t_data *data, t_cmd *cmd)
 		return (g_last_exit_code);
 	if (execve(cmd->pipex->path, cmd->args, data->env_arr) == -1)
 		perror("execve");
+	g_last_exit_code = 1;
 	return (EXIT_FAILURE);
 }
 
@@ -97,20 +98,22 @@ int	handle_child_process(t_data *data, t_cmd *cmd, int **pipes, int i)
 	{
 		dup2(pipes[i][1], STDOUT_FILENO);
 		close_pipes(pipes, count);
-		return (execute_command(data, cmd));
+		execute_command(data, cmd);
 	}
 	else if (!cmd->next)
 	{
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 		close_pipes(pipes, count);
-		return (execute_command(data, cmd));
+		execute_command(data, cmd);
 	}
 	else
 	{
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 		dup2(pipes[i][1], STDOUT_FILENO);
 		close_pipes(pipes, count);
-		return (execute_command(data, cmd));
+		execute_command(data, cmd);
 	}
+	(close_pipes(pipes, count), free_pipes(pipes));
+	cleanup_shell_data(data, true);
 	return (0);
 }

@@ -97,9 +97,7 @@ int	write_heredoc_input(t_data *data, t_in_out_fds *io, int fd)
 		line = readline(">");
 		if (!check_heredoc_line(data, &line, io, &success))
 			break ;
-		// ft_putendl_fd(line, fd);
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
+		ft_putendl_fd(line, fd);
 		free_str_null(&line);
 	}
 	close(fd);

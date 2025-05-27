@@ -67,7 +67,7 @@ int	execute_with_pipes(t_data *data, int npipe)
 			return (malloc_error("t_pipex"));
 		tmp->pipex->fork_pid = fork();
 		if (tmp->pipex->fork_pid == 0)
-			exit(handle_child_process(data, tmp, pipefd, i));
+			handle_child_process(data, tmp, pipefd, i);
 		tmp = tmp->next;
 		i++;
 	}
