@@ -29,13 +29,17 @@ int	open_file(t_in_out_fds *io, char *file, char *original_filename)
 {
 	int word_count;
 
-	word_count = count_words(file);
-	if (word_count != 1 || !file || file[0] == '\0')
+	if(file && !original_filename)
 	{
-		// if (g_last_exit_code == 0)
-		// 	print_command_error(original_filename, NULL, "ambiguous redirect", false);
-		// g_last_exit_code = 1;
-		io->filename = ft_strdup(original_filename);
+		io->filename = NULL;
+		return (0);	
+	}
+	word_count = 1;
+	if(original_filename && original_filename[0] == '$')
+		word_count = count_words(file);
+	if (word_count != 1 || !file)
+	{
+		io->filename = NULL;
 		return (0);
 	}
 	io->filename = ft_strdup(file);
@@ -78,6 +82,8 @@ int	count_words(char *str)
 	int words = 0;
 	bool in_word = false;
 
+	if(!str)
+		return 0;
 	while (str[i])
 	{
 		if (!in_word && str[i] != ' ')
@@ -100,14 +106,6 @@ int	handle_input_redirection(t_cmd **last_cmd, t_separation **token_lst)
 	int	i;
 
 	temp = *token_lst;
-	// if (g_last_exit_code == 1)
-	// {
-	// 	if (temp->next && temp->next->next)
-	// 		*token_lst = temp->next->next;
-	// 	else if (temp->next)
-	// 		*token_lst = temp->next;
-	// 	return (0);
-	// }
 	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);

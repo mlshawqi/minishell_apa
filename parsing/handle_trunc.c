@@ -21,14 +21,6 @@ int	parse_trunc(t_cmd **last_cmd, t_separation **token_lst)
 	int				i;
 
 	current_token = *token_lst;
-	// if (g_last_exit_code == 1)
-	// {
-	// 	if (current_token->next && current_token->next->next)
-	// 		*token_lst = current_token->next->next;
-	// 	else if (current_token->next)
-	// 		*token_lst = current_token->next;
-	// 	return (0);
-	// }
 	i = 0;
 	cmd = get_last_command(*last_cmd);
 	init_cmd_in_out(cmd);

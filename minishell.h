@@ -371,5 +371,7 @@ int						is_len(char *str1, char *str2, char hint);
 int						update_pwd2(t_data *data, t_env **env);
 void					update_pwd(t_env **env, char *path, char hint);
 int						run_cd(t_data *data, t_env **env, char **args);
+void	export_last_cmd(t_env **lst, char *var);
+
 
 #endif

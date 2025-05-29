@@ -34,13 +34,14 @@ int	ft_execve(t_data *data, t_cmd *cmd)
 	if (pid == 0)
 	{
 		if (execve(cmd->pipex->path, data->cmd->args, data->env_arr) == -1)
-			perror("execve");
-		exit(127);
+			print_cmd_error("minishell: pipe", strerror(errno), NULL);
+		g_last_exit_code= 127;
+		cleanup_shell_data(data, true);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		set_signals();
+		// set_signals();
 		if (WIFEXITED(status))
 			g_last_exit_code = WEXITSTATUS(status);
 		return (g_last_exit_code);

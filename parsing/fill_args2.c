@@ -2,7 +2,6 @@
 
 char	*combine_vars(t_separation **token_node)
 {
-	// printf("combin");
 	t_separation	*current_token = *token_node;
 	char			*result = ft_strdup(current_token->str);
 	char			*tmp;

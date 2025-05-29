@@ -41,8 +41,29 @@ char	**env_to_array(t_env *env)
 	return (array);
 }
 
+void	export_last_cmd(t_env **lst, char *var)
+{
+	t_env	*tmp;
+
+	tmp = *lst;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, "_") == 0)
+		{
+			if (tmp->value)
+				free_str_null(&tmp->value);
+			tmp->value = ft_strdup(var);
+			if(!tmp->value)
+				malloc_error("t_env");
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
 int	init_env_arr(t_data *data)
 {
+	if(data->cmd->command)
+		export_last_cmd(&data->env, data->cmd->command);
 	data->env_arr = env_to_array(data->env);
 	if (!data->env_arr)
 		return (malloc_error("t_data env_array"));

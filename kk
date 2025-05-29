@@ -1,0 +1,16 @@
+Makefile
+check_file_error.txt
+dd ddd      ddd
+execution
+expansion
+faty
+hhhhh
+kk
+lexification
+libft
+minishell
+minishell.h
+minishell_tester
+parsing
+readline.supp
+wiam

@@ -16,8 +16,7 @@ int	open_files(t_in_out_fds *redirec)
 {
 	if (redirec->fd == -1)
 	{
-		if (!redirec->filename || (redirec->filename
-				&& redirec->filename[0] == '\0' || redirec->filename[0] == '$') )
+		if (!redirec->filename)
 		{
 			print_cmd_error("minishell", "ambiguous redirect", redirec->filename);
 			return (1);
