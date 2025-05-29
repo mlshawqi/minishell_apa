@@ -35,6 +35,5 @@ bool	process_user_input(t_data *data)
         g_last_exit_code = 130;
         return (false);
     }
-    // display_pipeline_commands(data);
     return (true);
 }

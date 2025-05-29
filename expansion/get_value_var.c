@@ -34,7 +34,7 @@ char *clean_spaces(const char *str) {
     int in_word = 0;
     while (isspace(str[i])) i++;
 
-    for (; str[i]; i++) {
+    while (str[i]) {
         if (!isspace(str[i])) {
             result[j++] = str[i];
             in_word = 1;
@@ -43,6 +43,7 @@ char *clean_spaces(const char *str) {
             in_word = 0;
             while (isspace(str[i + 1])) i++;
         }
+        i++;
     }
     if (j > 0 && result[j - 1] == ' ')
         j--;
@@ -60,7 +61,10 @@ char *get_value(t_separation *token, char *str, t_env *env_list)
     {
         if (token != NULL)
             token->is_var = true;
-        value = clean_spaces(find_env_var(env_list, var));
+        if(token->status== DFLT)
+            value = clean_spaces(find_env_var(env_list, var));
+        else
+            value = ft_strdup(find_env_var(env_list, var));
     }
     else if (var && ft_strcmp(var, "?") == 0)
         value = ft_itoa(g_last_exit_code);

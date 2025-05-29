@@ -46,6 +46,7 @@ typedef struct s_separation
 	int					type;
 	int					status;
 	bool				join;
+	bool				quoted;
 	struct s_separation	*prev;
 	struct s_separation	*next;
 }						t_separation;
@@ -144,11 +145,11 @@ void					add_token(t_separation **lst, t_separation *new_token);
 int						malloc_separator(t_separation **token_lst, char *str,
 							int index, int type);
 int						malloc_word(t_separation **token_lst, char *str,
-							int index, int start);
+							int index, int start, int status);
 int						is_separator(char *str, int i);
 int						find_status(int status, char *str, int i);
 int						malloc_word_separator(int *i, char *str, int start,
-							t_data *data);
+							t_data *data, int status);
 int						tokenization(t_data *data, char *str);
 void					print_tokens(t_separation *token_lst);
 void					free_token_list(t_separation **token_list);

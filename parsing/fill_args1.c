@@ -67,7 +67,6 @@ char	**extend_args_with_tokens(int existing_len, char **new_args,
 
 int	append_default_args(t_separation **token_node, t_cmd *cmd)
 {
-	// printf("🧩 append_default_arguments called\n");
 	int				arg_count;
 	int				existing_len;
 	char			**new_args;

@@ -31,6 +31,7 @@ t_separation	*ft_new_token(char *str, char *str_backup,
 	new_token->join = false;
 	new_token->prev = NULL;
 	new_token->next = NULL;
+	new_token->quoted = false;
 	return (new_token);
 }
 
@@ -94,22 +95,37 @@ int	malloc_separator(t_separation **token_lst,
 	return (0);
 }
 
-int	malloc_word(t_separation **token_lst,
-	char *str, int index, int start)
+int malloc_word(t_separation **token_lst, char *str, int index, int start, int status)
 {
-	int		i;
+	int		i = 0;
 	char	*word;
 
-	i = 0;
 	word = malloc(sizeof(char) * (index - start + 1));
 	if (!word)
 		return (1);
+
 	while (start < index)
 		word[i++] = str[start++];
 	word[i] = '\0';
-	add_token(token_lst,
-		ft_new_token(word, ft_strdup(word), WORD, DFLT));
-	return (0);
+
+
+    t_separation *new_token = ft_new_token(word, ft_strdup(word), WORD, DFLT);
+    if (!new_token)
+    {
+        free(word);
+        return (1);
+    }
+
+    if (word[0] == '"' || word[0] == '\'')
+    {
+        size_t len = ft_strlen(word);
+        if (len > 1 && word[0] == word[len - 1])
+        {
+            new_token->quoted = true;
+        }
+    }
+    add_token(token_lst, new_token);
+    return (0);
 }
 
 int	is_separator(char *str, int i)
@@ -146,41 +162,38 @@ int	find_status(int status, char *str, int i)
 	return (status);
 }
 
-int malloc_word_separator(int *i, char *str,
-	int start, t_data *data)
+int malloc_word_separator(int *i, char *str, int start, t_data *data, int status)
 {
-	int type;
+    int type;
 
-	type = is_separator(str, *i);
+    type = is_separator(str, *i);
 
-	if (type)
-	{
-		if ((type == HEREDOC || type == APPEND)
-			&& str[*i + 2] == '|')
-		{
-			if (*i != 0 && is_separator(str, *i - 1) == 0)
-				malloc_word(&data->token, str, *i, start);
-			malloc_separator(&data->token, str, *i, type);
-			malloc_separator(&data->token, str, *i + 2, PIPE);
-			*i += 2;
-			start = *i + 1;
-		}
-		else
-		{
-			if (*i != 0 && is_separator(str, *i - 1) == 0)
-				malloc_word(&data->token, str, *i, start);
+    if (type)
+    {
+        if ((type == HEREDOC || type == APPEND) && str[*i + 2] == '|')
+        {
+            if (*i != 0 && is_separator(str, *i - 1) == 0)
+                malloc_word(&data->token, str, *i, start, status);
+            malloc_separator(&data->token, str, *i, type);
+            malloc_separator(&data->token, str, *i + 2, PIPE);
+            *i += 2;
+            start = *i + 1;
+        }
+        else
+        {
+            if (*i != 0 && is_separator(str, *i - 1) == 0)
+                malloc_word(&data->token, str, *i, start, status);
 
-			if (type == APPEND || type == HEREDOC || type == PIPE
-				|| type == INPUT || type == TRUNC || type == END || type == AMPER)
-			{
-				malloc_separator(&data->token, str, *i, type);
-				if (type == APPEND || type == HEREDOC)
-					(*i)++;
-			}
-			start = *i + 1;
-		}
-	}
-	return (start);
+            if (type == APPEND || type == HEREDOC || type == PIPE || type == INPUT || type == TRUNC || type == END || type == AMPER)
+            {
+                malloc_separator(&data->token, str, *i, type);
+                if (type == APPEND || type == HEREDOC)
+                    (*i)++;
+            }
+            start = *i + 1;
+        }
+    }
+    return (start);
 }
 
 
@@ -212,7 +225,7 @@ int	tokenization(t_data *data, char *str)
 	{
 		status = find_status(status, str, i);
 		if (status == DFLT)
-			start = malloc_word_separator(&i, str, start, data);
+			start = malloc_word_separator(&i, str, start, data, status);
 	}
 
 	if (status != DFLT)

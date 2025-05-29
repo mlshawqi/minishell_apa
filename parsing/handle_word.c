@@ -71,29 +71,46 @@ void	split_variable_command(t_cmd *last_cmd, const char *cmd_str)
 // 	*token_lst = current_token;
 // }
 
-void	parse_word_token(t_cmd **cmd, t_separation **token_lst)
+void parse_word_token(t_cmd **cmd_list_head, t_separation **token_lst)
 {
-	t_separation	*current_token;
-	t_cmd			*last_cmd;
+    t_separation    *current_token;
+    t_cmd           *last_cmd;
 
-	current_token = *token_lst;
-	last_cmd = get_last_command(*cmd);
-	if (last_cmd->command == NULL && (current_token->type == WORD || current_token->type == VAR))
-	{
-		if (current_token->type == VAR && has_space(current_token->str))
-		{
-			split_variable_command(last_cmd, current_token->str);
-			current_token = current_token->next;
-			*token_lst = current_token;
-			return ;
-		}
-		else
-		{
-			last_cmd->command = ft_strdup(current_token->str);
-			current_token = current_token->next;
-		}
-	}
-	process_command_args(&current_token, last_cmd);
+    current_token = *token_lst;
+    last_cmd = get_last_command(*cmd_list_head);
+    if (last_cmd->command == NULL && (current_token->type == WORD || current_token->type == VAR))
+    {
+        if (current_token->quoted == true)
+        {
+            last_cmd->command = ft_strdup(current_token->str);
+            last_cmd->args = malloc(sizeof(char *) * 2);
+            if (!last_cmd->args)
+				return;
+            last_cmd->args[0] = ft_strdup(last_cmd->command);
+            last_cmd->args[1] = NULL;
+            
+            current_token = current_token->next;
+        }
+        else if (has_space(current_token->str))
+        {
+            split_variable_command(last_cmd, current_token->str);
+            
+            current_token = current_token->next;
+        }
+        else
+        {
+            last_cmd->command = ft_strdup(current_token->str);
+            last_cmd->args = malloc(sizeof(char *) * 2);
+            if (!last_cmd->args) 
+				return;
+            last_cmd->args[0] = ft_strdup(last_cmd->command);
+            last_cmd->args[1] = NULL;
+            
+            current_token = current_token->next;
+        }
+    }
+    if (current_token)
+        process_command_args(&current_token, last_cmd);
 
-	*token_lst = current_token;
+    *token_lst = current_token;
 }
