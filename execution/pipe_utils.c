@@ -22,9 +22,7 @@ int	wait_for_all(t_data *data)
 		waitpid(tmp->pipex->fork_pid, &tmp->pipex->status, 0);
 		if (!tmp->next)
 		{
-			if (g_last_exit_code == 130 || g_last_exit_code == 131)
-				return (g_last_exit_code);
-			else if (WIFEXITED(tmp->pipex->status))
+			if (WIFEXITED(tmp->pipex->status))
 				g_last_exit_code = WEXITSTATUS(tmp->pipex->status);
 			return (g_last_exit_code);
 		}
@@ -93,6 +91,7 @@ int	handle_child_process(t_data *data, t_cmd *cmd, int **pipes, int i)
 {
 	int	count;
 
+	g_last_exit_code = 0;
 	count = init_or_count_pipes(data->cmd, 0);
 	if (!cmd->prev)
 	{

@@ -51,6 +51,7 @@ char *clean_spaces(const char *str) {
     result[j] = '\0';
     return result;
 }
+
 char *get_value(t_separation *token, char *str, t_env *env_list)
 {
     char *value;
@@ -61,7 +62,10 @@ char *get_value(t_separation *token, char *str, t_env *env_list)
     {
         if (token != NULL)
             token->is_var = true;
-        if(token->status== DFLT)
+        
+        if (token != NULL && token->type == HEREDOC)
+            value = ft_strdup(find_env_var(env_list, var));
+        else if (!token || !token->quoted)
             value = clean_spaces(find_env_var(env_list, var));
         else
             value = ft_strdup(find_env_var(env_list, var));

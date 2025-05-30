@@ -6,8 +6,8 @@ void	minishell_interactive(t_data *data)
 {
 	while (1)
 	{
-		// configure_interactive_signals();
 		set_signals();
+		// configure_interactive_signals();
 		data->user_input = readline("minishell~$ ");
 		if (!data->user_input)
 		{
