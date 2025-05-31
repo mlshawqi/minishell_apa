@@ -25,8 +25,8 @@ static bool	reset_status_if_matching_quote(t_separation **token, int *i)
 	char	c;
 
 	c = (*token)->str[*i];
-	if ((c == '\'' && (*token)->status == SQUOTE)
-		|| (c == '\"' && (*token)->status == DQUOTE))
+	if ((c == '\'' && (*token)->status == SQUOTE) || (c == '\"'
+			&& (*token)->status == DQUOTE))
 	{
 		(*token)->status = DFLT;
 		(*i)++;

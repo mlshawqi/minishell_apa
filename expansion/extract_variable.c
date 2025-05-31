@@ -19,7 +19,7 @@ int	get_var_length(char *str)
 		i++;
 	i++;
 	if ((str[i] >= '0' && str[i] <= '9') || str[i] == '?' || str[i] == '*')
-	// if (str[i] == '?')
+		// if (str[i] == '?')
 		return (1);
 	while (str[i])
 	{

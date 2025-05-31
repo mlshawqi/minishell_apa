@@ -69,19 +69,20 @@ int	pwd_cmd(t_data *data, char **args)
 	if (args && args[0])
 	{
 		i = 0;
-		while(args[0][i] == '-')
+		while (args[0][i] == '-')
 			i++;
 		if (i && (ft_strlen(args[0]) > 1))
 		{
-			if(args[0][i] != '\0')
+			if (args[0][i] != '\0')
 			{
-				if(ft_strlen(args[0]) == 2)
+				if (ft_strlen(args[0]) == 2)
 				{
-					print_cmd_error("minishell: pwd", "invalid option", args[0]);
+					print_cmd_error("minishell: pwd", "invalid option",
+						args[0]);
 					return (2);
 				}
 			}
-			else if(args[0][i] == '\0' && i == 2)
+			else if (args[0][i] == '\0' && i == 2)
 				return (run_pwd(data));
 			print_cmd_error("minishell: pwd", "invalid option", "--");
 			return (2);

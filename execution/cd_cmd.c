@@ -12,34 +12,13 @@
 
 #include "../minishell.h"
 
-static int	hanlde_shortcut(char *str, char *path)
-{
-	char	*new_path;
-
-	new_path = ft_strjoin(str, ft_strchr(path, '~') + 1);
-	if (chdir(new_path) == -1)
-	{
-		print_cmd_error("minishell: cd", "No such file or directory", new_path);
-		free_str_null(&new_path);
-		g_last_exit_code = 1;
-		return (1);
-	}
-	free_str_null(&new_path);
-	return (0);
-}
-
-static int	handle_home_shortcut(t_env *env, char *str)
+static int	handle_home_shortcut(t_env *env)
 {
 	while (env)
 	{
 		if (ft_strcmp(env->name, "HOME") == 0)
 		{
-			if (str)
-			{
-				if (hanlde_shortcut(env->value, str) == 1)
-					return (-1);
-			}
-			else if ((env->value[0] != '\0') && chdir(env->value) == -1)
+			if ((env->value[0] != '\0') && chdir(env->value) == -1)
 			{
 				print_cmd_error("minishell: cd", "No such file or directory",
 					env->value);
@@ -106,18 +85,10 @@ int	update_pwd2(t_data *data, t_env **env)
 
 int	run_cd(t_data *data, t_env **env, char **args)
 {
-	if ((!args || !args[0]) || (args[0][0] == '~') && !args[1])
+	if (!args || !args[0])
 	{
-		if (args && args[0] && (ft_strcmp(args[0], "~") == 0))
-		{
-			if (handle_home_shortcut(*env, NULL) == -1)
-				return (1);
-		}
-		else
-		{
-			if (handle_home_shortcut(*env, args[0]) == -1)
-				return (1);
-		}
+		if (handle_home_shortcut(*env) == -1)
+			return (1);
 	}
 	else if (args[1])
 	{

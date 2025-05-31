@@ -97,15 +97,17 @@ int	execution(t_data *data)
 	int	npipe;
 
 	npipe = init_or_count_pipes(data->cmd, 0);
-	if (init_env_arr(data) != 0)
+	if (init_env_arr(data, 1) != 0)
 		return (1);
 	if (!npipe)
+	{
 		g_last_exit_code = one_command(data);
+		init_env_arr(data, 0);
+	}
 	else
 	{
 		g_last_exit_code = execute_with_pipes(data, npipe);
 		set_signals();
 	}
-	// display_pipeline_commands(data);
 	return (g_last_exit_code);
 }

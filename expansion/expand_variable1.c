@@ -13,8 +13,8 @@ void	insert_var_value(char *new_str, char *var_value, int *pos)
 	}
 }
 
-char	*construct_new_string(char *old_str, char *var_value,
-			int new_size, int index)
+char	*construct_new_string(char *old_str, char *var_value, int new_size,
+		int index)
 {
 	int		i;
 	int		j;

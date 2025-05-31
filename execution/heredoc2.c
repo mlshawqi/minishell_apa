@@ -72,7 +72,7 @@ int	fork_heredoc(t_data *data, t_in_out_fds *io)
 	}
 	else
 	{
-		data->is_ctrlc =  handle_parent(fdpipe, io, pid);
+		data->is_ctrlc = handle_parent(fdpipe, io, pid);
 		return (data->is_ctrlc);
 	}
 	return (0);

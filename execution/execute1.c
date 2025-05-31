@@ -52,21 +52,44 @@ void	export_last_cmd(t_env **lst, char *var)
 		{
 			if (tmp->value)
 				free_str_null(&tmp->value);
-			tmp->value = ft_strdup(var);
-			if(!tmp->value)
-				malloc_error("t_env");
+			if (var)
+			{
+				tmp->value = ft_strdup(var);
+				if (!tmp->value)
+					malloc_error("t_env");
+			}
+			else
+				tmp->value = NULL;
 			break ;
 		}
 		tmp = tmp->next;
 	}
 }
-int	init_env_arr(t_data *data)
+
+int	init_env_arr(t_data *data, int hint)
 {
-	if(data->cmd->command)
-		export_last_cmd(&data->env, data->cmd->command);
-	data->env_arr = env_to_array(data->env);
-	if (!data->env_arr)
-		return (malloc_error("t_data env_array"));
+	if (hint == 0)
+	{
+		if (data->cmd->command)
+		{
+			if (data->cmd->args && data->cmd->args[1])
+			{
+				while (data->cmd->args[hint])
+					hint++;
+				export_last_cmd(&data->env, data->cmd->args[hint - 1]);
+			}
+			else
+				export_last_cmd(&data->env, data->cmd->command);
+		}
+		else
+			export_last_cmd(&data->env, NULL);
+	}
+	else
+	{
+		data->env_arr = env_to_array(data->env);
+		if (!data->env_arr)
+			return (malloc_error("t_data env_array"));
+	}
 	return (0);
 }
 

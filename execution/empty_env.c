@@ -51,7 +51,8 @@ int	ft_atoi_env(char *str)
 	{
 		result = result * 10 + (str[i] - '0');
 		if (result >= 1000)
-			return (print_cmd_error("warning", "shell level (1001) too high,"
+			return (print_cmd_error("warning",
+					"shell level (1001) too high,"
 					"resetting to 1", NULL), 1);
 		i++;
 	}

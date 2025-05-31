@@ -51,22 +51,19 @@ char	*relative_path(t_env *env, char *cmd)
 {
 	char	**arr;
 	char	*path;
-	int		i;
-	t_env	*tmp_env;
 
 	arr = NULL;
-	tmp_env = env;
 	path = NULL;
-	while (tmp_env)
+	while (env)
 	{
-		if (ft_strcmp(tmp_env->name, "PATH") == 0)
+		if (ft_strcmp(env->name, "PATH") == 0)
 		{
-			if (tmp_env->value && tmp_env->value[0] != '\0')
-				arr = ft_split(tmp_env->value, ':');
+			if (env->value && env->value[0] != '\0')
+				arr = ft_split(env->value, ':');
 		}
-		tmp_env = tmp_env->next;
+		env = env->next;
 	}
-	if(!arr)
+	if (!arr)
 	{
 		print_cmd_error("minishell", "No such file or directory", cmd);
 		g_last_exit_code = 127;
@@ -103,9 +100,11 @@ static char	*path_in_directory(char *cmd)
 
 char	*find_program_path(t_env *env, char *cmd)
 {
-	int	i;
+	int		i;
+	t_env	*tmp_env;
 
 	i = 0;
+	tmp_env = env;
 	if (cmd == NULL || cmd[0] == '\0')
 	{
 		g_last_exit_code = 127;
@@ -123,5 +122,5 @@ char	*find_program_path(t_env *env, char *cmd)
 			return (path_in_directory(cmd));
 		i++;
 	}
-	return (relative_path(env, cmd));
+	return (relative_path(tmp_env, cmd));
 }

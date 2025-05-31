@@ -16,8 +16,8 @@ int	calculate_new_length(char *str, int count, int i)
 			i++;
 			continue ;
 		}
-		else if ((str[i] == '\'' && status == SQUOTE)
-			|| (str[i] == '\"' && status == DQUOTE))
+		else if ((str[i] == '\'' && status == SQUOTE) || (str[i] == '\"'
+				&& status == DQUOTE))
 		{
 			status = DFLT;
 			i++;
@@ -50,8 +50,7 @@ int	process_quotes(t_data *data)
 	current = data->token;
 	while (current)
 	{
-		if (contains_quotes(current->str)
-			&& (!current->prev || (current->prev
+		if (contains_quotes(current->str) && (!current->prev || (current->prev
 					&& current->prev->type != HEREDOC)))
 			delete_quotes(&current);
 		current = current->next;

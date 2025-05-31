@@ -38,10 +38,13 @@ int	handle_pipe_redirections(t_data *data, t_cmd *cmd)
 	tmp = cmd->io_fds;
 	while (tmp)
 	{
-		if (open_files(tmp) == 1)
+		if (tmp->fd == -1)
 		{
-			g_last_exit_code = 1;
-			return (1);
+			if (open_files(tmp) == 1)
+			{
+				g_last_exit_code = 1;
+				return (1);
+			}
 		}
 		if (dup_redirect(tmp) == 1)
 			return (1);
@@ -96,23 +99,19 @@ int	handle_child_process(t_data *data, t_cmd *cmd, int **pipes, int i)
 	if (!cmd->prev)
 	{
 		dup2(pipes[i][1], STDOUT_FILENO);
-		close_pipes(pipes, count);
-		execute_command(data, cmd);
 	}
 	else if (!cmd->next)
 	{
 		dup2(pipes[i - 1][0], STDIN_FILENO);
-		close_pipes(pipes, count);
-		execute_command(data, cmd);
 	}
 	else
 	{
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 		dup2(pipes[i][1], STDOUT_FILENO);
-		close_pipes(pipes, count);
-		execute_command(data, cmd);
 	}
-	(close_pipes(pipes, count), free_pipes(pipes));
+	close_pipes(pipes, count);
+	execute_command(data, cmd);
+	free_pipes(pipes);
 	cleanup_shell_data(data, true);
 	return (0);
 }

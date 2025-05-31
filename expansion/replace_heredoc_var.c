@@ -29,8 +29,8 @@ static int	remove_variable(t_separation **token, char *str, int idx)
 	return (0);
 }
 
-static char	*replace_and_update(t_separation **token_node,
-		char *str, char *var_value, int index)
+static char	*replace_and_update(t_separation **token_node, char *str,
+		char *var_value, int index)
 {
 	char	*newstr;
 	int		newstr_len;
@@ -70,7 +70,7 @@ int	replace_variable(t_separation **token, char *value, int idx)
 
 char	*replace_heredoc_var(char *str, char *value, int idx)
 {
-	char	*tmp;
+	char *tmp;
 
 	if (!value)
 		value = ft_strdup("");

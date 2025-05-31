@@ -337,7 +337,7 @@ int						execution(t_data *data);
 int						ft_execve(t_data *data, t_cmd *cmd);
 int						handle_redirections(t_data *data, t_cmd *tmp);
 int						dup_redirect(t_in_out_fds *redirect);
-int						init_env_arr(t_data *data);
+int						init_env_arr(t_data *data, int hint);
 int						execute_with_pipes(t_data *data, int npipe);
 int						**allocate_pipes(int count);
 void					free_tab(int **arr, int i);

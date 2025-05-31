@@ -57,7 +57,7 @@ int	unset_cmd(t_env **env, t_env **export, char **args)
 			}
 			else
 			{
-				if(ft_strcmp(args[j], "_") != 0)
+				if (ft_strcmp(args[j], "_") != 0)
 				{
 					unset_var(env, args[j]);
 					unset_var(export, args[j]);
